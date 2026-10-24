@@ -1,0 +1,500 @@
+{
+  "fuente": "transferencias_digitales",
+  "filas_entrada": 600,
+  "filas_salida": 600,
+  "duplicados_exactos_excluidos": 0,
+  "reglas_aplicadas": {
+    "NORMALIZAR_MAYUSCULAS": 121,
+    "WINSORIZACION_IQR": 18,
+    "NULO_A_ETIQUETA_CONTROLADA": 16,
+    "CENTINELA_A_NULO": 8
+  },
+  "formatos_fecha": {
+    "ISO8601 con offset": 405,
+    "EPOCH segundos": 195
+  },
+  "faltantes": [
+    {
+      "columna": "notification_email",
+      "n_nulos": 16,
+      "poblacion": 600,
+      "pct_nulos": 2.67,
+      "nota_poblacion": "",
+      "pruebas": [
+        {
+          "variable": "status",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.13692216409660585,
+          "efecto(V Cramér)": 0.096,
+          "pct_celdas_esp<5": 37.5
+        },
+        {
+          "variable": "amount",
+          "prueba": "Mann-Whitney",
+          "p_valor": 0.34837671994016006,
+          "efecto(r biserial)": -0.137,
+          "pct_celdas_esp<5": null
+        },
+        {
+          "variable": "concept",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.5267386872696198,
+          "efecto(V Cramér)": 0.083,
+          "pct_celdas_esp<5": 50.0
+        },
+        {
+          "variable": "platform",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.6744077725521496,
+          "efecto(V Cramér)": 0.051,
+          "pct_celdas_esp<5": 50.0
+        },
+        {
+          "variable": "currency",
+          "prueba": "chi-cuadrada",
+          "p_valor": 1.0,
+          "efecto(V Cramér)": 0.0,
+          "pct_celdas_esp<5": 25.0
+        }
+      ],
+      "significativas": [],
+      "alfa_bonferroni": 0.01,
+      "mecanismo_sugerido": "SIN EVIDENCIA CONTRA MCAR con las variables disponibles (no demuestra MCAR; MNAR no puede descartarse)"
+    }
+  ],
+  "imputacion_numerica": {
+    "amount": {
+      "n_faltantes": 0,
+      "poblacion_aplicable": 600,
+      "pct_faltante": 0.0,
+      "imputado": false,
+      "medianas": {},
+      "motivo": "sin faltantes"
+    }
+  },
+  "imputacion_categorica": {
+    "notification_email": {
+      "etiqueta": "SIN_CORREO",
+      "n_imputados": 16
+    }
+  },
+  "atipicos": {
+    "MXN": {
+      "q1": 10000.955,
+      "q3": 26267.6,
+      "iqr": 16266.644999999999,
+      "lim_inf": -14399.012499999999,
+      "lim_sup": 50667.5675,
+      "ext_inf": -38798.979999999996,
+      "ext_sup": 75067.535,
+      "evaluado": true,
+      "n": 466,
+      "n_leve_alto": 0,
+      "n_leve_bajo": 0,
+      "n_extremo_alto": 15,
+      "n_extremo_bajo": 0,
+      "maximo_observado": 5240100.0,
+      "minimo_observado": 73.62
+    },
+    "USD": {
+      "q1": 11413.8875,
+      "q3": 26838.635000000002,
+      "iqr": 15424.747500000001,
+      "lim_inf": -11723.233750000003,
+      "lim_sup": 49975.756250000006,
+      "ext_inf": -34860.35500000001,
+      "ext_sup": 73112.8775,
+      "evaluado": true,
+      "n": 134,
+      "n_leve_alto": 0,
+      "n_leve_bajo": 0,
+      "n_extremo_alto": 3,
+      "n_extremo_bajo": 0,
+      "maximo_observado": 4141401.0,
+      "minimo_observado": 106.6
+    }
+  },
+  "estados_monto": {
+    "POSITIVO": 600
+  },
+  "montos_winsorizados": 18,
+  "parametros": {
+    "factor_iqr": 1.5,
+    "factor_extremo": 3.0,
+    "min_n_segmento": 8,
+    "umbral_imputacion": 0.1,
+    "aplicar_capping": true
+  },
+  "advertencias": [
+    "Segmento 'MXN': 15 extremos (3.2% de los registros). Una proporción así sugiere un error sistemático (escala/unidad/captura) y no ruido aleatorio: conviene enviarlos a revisión o cuarentena usando el monto original (columna *_original) en lugar de confiar en el valor recortado.",
+    "Segmento 'USD': 3 extremos (2.2% de los registros). Una proporción así sugiere un error sistemático (escala/unidad/captura) y no ruido aleatorio: conviene enviarlos a revisión o cuarentena usando el monto original (columna *_original) en lugar de confiar en el valor recortado.",
+    "Hay montos en varias monedas y no hay tipo de cambio: el IQR se calculó por moneda y NO se convirtieron importes. El Integrante 2 debe definir la regla antes de sumar montos entre monedas.",
+    "Fechas sin zona horaria se asumieron en UTC-06:00 (confirmar con el equipo)."
+  ],
+  "columnas_nuevas": [
+    "flag_id_repetido",
+    "fecha_hora_std",
+    "fecha_formato_origen",
+    "amount_original",
+    "monto_estado",
+    "monto_atipico",
+    "flag_monto_imputado",
+    "flag_notification_email_imputado",
+    "flag_monto_winsorizado"
+  ],
+  "perfil_inicial": {
+    "n_filas": 600,
+    "n_columnas": 10,
+    "columnas": [
+      {
+        "columna": "transfer_id",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 600,
+        "ejemplos_frecuentes": "SPEI-2026-00001(1); SPEI-2026-00002(1); SPEI-2026-00003(1)"
+      },
+      {
+        "columna": "timestamp",
+        "dtype_pandas": "object",
+        "tipos_python": "str:405, int:195",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 598,
+        "ejemplos_frecuentes": "2026-09-16T19:59:00-06:00(2); 2026-09-15T08:39:00-06:00(2); 2026-09-12T19:49:00-"
+      },
+      {
+        "columna": "account_id",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 79,
+        "ejemplos_frecuentes": "CTA-0010(16); CTA-0042(16); CTA-0040(16)"
+      },
+      {
+        "columna": "amount",
+        "dtype_pandas": "float64",
+        "tipos_python": "float:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 600,
+        "ejemplos_frecuentes": "19844.18(1); 33048.19(1); 28312.37(1)"
+      },
+      {
+        "columna": "currency",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "MXN(466); USD(134)"
+      },
+      {
+        "columna": "beneficiary_clabe",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 555,
+        "ejemplos_frecuentes": "12345(46); 012210100614023846(1); 012851851854195836(1)"
+      },
+      {
+        "columna": "notification_email",
+        "dtype_pandas": "str",
+        "tipos_python": "str:592",
+        "n_nulos": 8,
+        "pct_nulos": 1.33,
+        "n_unicos": 419,
+        "ejemplos_frecuentes": "correo@@sinformato(19); invalido.com(11); (8)"
+      },
+      {
+        "columna": "concept",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 6,
+        "ejemplos_frecuentes": "Servicios(116); Préstamo(108); Nómina(95)"
+      },
+      {
+        "columna": "status",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 5,
+        "ejemplos_frecuentes": "DEVUELTA(132); liquidada(121); RECHAZADA(117)"
+      },
+      {
+        "columna": "platform",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 4,
+        "ejemplos_frecuentes": "API Empresarial(166); Web Banking(150); App Android(145)"
+      }
+    ],
+    "duplicados_exactos": 0,
+    "ids_repetidos": 0,
+    "n_nulos_total": 8,
+    "inconsistencias": [
+      {
+        "columna": "timestamp",
+        "tipo": "TIPOS_MEZCLADOS",
+        "cantidad": 195,
+        "detalle": "str=405, int=195"
+      },
+      {
+        "columna": "notification_email",
+        "tipo": "CENTINELA_DE_NULO",
+        "cantidad": 8,
+        "detalle": ""
+      },
+      {
+        "columna": "status",
+        "tipo": "MAYUSCULAS_MEZCLADAS",
+        "cantidad": 115,
+        "detalle": "{'liquidada': 121, 'LIQUIDADA': 115}"
+      },
+      {
+        "columna": "timestamp",
+        "tipo": "FORMATOS_FECHA_MEZCLADOS",
+        "cantidad": 195,
+        "detalle": "d-d-dad:d:d-d:d=405; d=195"
+      },
+      {
+        "columna": "account_id",
+        "tipo": "FUERA_DE_PATRON_ESPERADO",
+        "cantidad": 29,
+        "detalle": "patrón ^CTA-00\\d{2}$; ejemplos: ['CTA-7940', 'CTA-7586', 'CTA-7959']"
+      },
+      {
+        "columna": "beneficiary_clabe",
+        "tipo": "FUERA_DE_PATRON_ESPERADO",
+        "cantidad": 46,
+        "detalle": "patrón ^\\d{18}$; ejemplos: ['12345']"
+      },
+      {
+        "columna": "notification_email",
+        "tipo": "FUERA_DE_PATRON_ESPERADO",
+        "cantidad": 38,
+        "detalle": "patrón ^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$; ejemplos: ['correo@@sinformato', 'invalido.com', '']"
+      }
+    ]
+  },
+  "perfil_final": {
+    "n_filas": 600,
+    "n_columnas": 19,
+    "columnas": [
+      {
+        "columna": "transfer_id",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 600,
+        "ejemplos_frecuentes": "SPEI-2026-00001(1); SPEI-2026-00002(1); SPEI-2026-00003(1)"
+      },
+      {
+        "columna": "timestamp",
+        "dtype_pandas": "object",
+        "tipos_python": "str:405, int:195",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 598,
+        "ejemplos_frecuentes": "2026-09-16T19:59:00-06:00(2); 2026-09-15T08:39:00-06:00(2); 2026-09-12T19:49:00-"
+      },
+      {
+        "columna": "account_id",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 79,
+        "ejemplos_frecuentes": "CTA-0010(16); CTA-0042(16); CTA-0040(16)"
+      },
+      {
+        "columna": "amount",
+        "dtype_pandas": "float64",
+        "tipos_python": "float:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 584,
+        "ejemplos_frecuentes": "50667.57(15); 49975.76(3); 19844.18(1)"
+      },
+      {
+        "columna": "currency",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "MXN(466); USD(134)"
+      },
+      {
+        "columna": "beneficiary_clabe",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 555,
+        "ejemplos_frecuentes": "12345(46); 012210100614023846(1); 012851851854195836(1)"
+      },
+      {
+        "columna": "notification_email",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 419,
+        "ejemplos_frecuentes": "correo@@sinformato(19); SIN_CORREO(16); invalido.com(11)"
+      },
+      {
+        "columna": "concept",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 6,
+        "ejemplos_frecuentes": "Servicios(116); Préstamo(108); Nómina(95)"
+      },
+      {
+        "columna": "status",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 4,
+        "ejemplos_frecuentes": "LIQUIDADA(236); DEVUELTA(132); RECHAZADA(117)"
+      },
+      {
+        "columna": "platform",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 4,
+        "ejemplos_frecuentes": "API Empresarial(166); Web Banking(150); App Android(145)"
+      },
+      {
+        "columna": "flag_id_repetido",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 1,
+        "ejemplos_frecuentes": "False(600)"
+      },
+      {
+        "columna": "fecha_hora_std",
+        "dtype_pandas": "datetime64[us, UTC-06:00]",
+        "tipos_python": "Timestamp:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 594,
+        "ejemplos_frecuentes": "2026-10-14 23:04:00-06:00(2); 2026-09-16 19:59:00-06:00(2); 2026-09-15 08:39:00-"
+      },
+      {
+        "columna": "fecha_formato_origen",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "ISO8601 con offset(405); EPOCH segundos(195)"
+      },
+      {
+        "columna": "amount_original",
+        "dtype_pandas": "float64",
+        "tipos_python": "float:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 600,
+        "ejemplos_frecuentes": "19844.18(1); 33048.19(1); 28312.37(1)"
+      },
+      {
+        "columna": "monto_estado",
+        "dtype_pandas": "object",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 1,
+        "ejemplos_frecuentes": "POSITIVO(600)"
+      },
+      {
+        "columna": "monto_atipico",
+        "dtype_pandas": "object",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "NO(582); EXTREMO_ALTO(18)"
+      },
+      {
+        "columna": "flag_monto_imputado",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 1,
+        "ejemplos_frecuentes": "False(600)"
+      },
+      {
+        "columna": "flag_notification_email_imputado",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "False(584); True(16)"
+      },
+      {
+        "columna": "flag_monto_winsorizado",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "False(582); True(18)"
+      }
+    ],
+    "duplicados_exactos": 0,
+    "ids_repetidos": 0,
+    "n_nulos_total": 0,
+    "inconsistencias": [
+      {
+        "columna": "timestamp",
+        "tipo": "TIPOS_MEZCLADOS",
+        "cantidad": 195,
+        "detalle": "str=405, int=195"
+      },
+      {
+        "columna": "timestamp",
+        "tipo": "FORMATOS_FECHA_MEZCLADOS",
+        "cantidad": 195,
+        "detalle": "d-d-dad:d:d-d:d=405; d=195"
+      },
+      {
+        "columna": "account_id",
+        "tipo": "FUERA_DE_PATRON_ESPERADO",
+        "cantidad": 29,
+        "detalle": "patrón ^CTA-00\\d{2}$; ejemplos: ['CTA-7940', 'CTA-7586', 'CTA-7959']"
+      },
+      {
+        "columna": "beneficiary_clabe",
+        "tipo": "FUERA_DE_PATRON_ESPERADO",
+        "cantidad": 46,
+        "detalle": "patrón ^\\d{18}$; ejemplos: ['12345']"
+      },
+      {
+        "columna": "notification_email",
+        "tipo": "FUERA_DE_PATRON_ESPERADO",
+        "cantidad": 46,
+        "detalle": "patrón ^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$; ejemplos: ['correo@@sinformato', 'invalido.com', 'SIN_CORREO']"
+      }
+    ]
+  }
+}
