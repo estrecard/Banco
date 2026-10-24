@@ -1,0 +1,490 @@
+{
+  "fuente": "atm",
+  "filas_entrada": 620,
+  "filas_salida": 600,
+  "duplicados_exactos_excluidos": 20,
+  "reglas_aplicadas": {
+    "NORMALIZAR_MAYUSCULAS": 85,
+    "NULO_A_ETIQUETA_CONTROLADA": 42,
+    "IMPUTACION_MEDIANA": 27,
+    "DUPLICADO_EXACTO_EXCLUIDO": 20,
+    "WINSORIZACION_IQR": 1
+  },
+  "formatos_fecha": {
+    "YYYY/MM/DD HH:MM:SS (sin zona)": 211,
+    "YYYY-MM-DD HH:MM:SS (sin zona)": 196,
+    "DD/MM/YYYY HH:MM (sin zona)": 193
+  },
+  "faltantes": [
+    {
+      "columna": "monto_mxn",
+      "n_nulos": 27,
+      "poblacion": 503,
+      "pct_nulos": 5.37,
+      "nota_poblacion": "Población evaluada sin ['CONSULTA_SALDO'] (monto $0 estructural, nunca falta).",
+      "pruebas": [
+        {
+          "variable": "id_cajero",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.35561286818108045,
+          "efecto(V Cramér)": 0.105,
+          "pct_celdas_esp<5": 25.0
+        },
+        {
+          "variable": "tipo_operacion",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.5878620910528479,
+          "efecto(V Cramér)": 0.046,
+          "pct_celdas_esp<5": 0.0
+        },
+        {
+          "variable": "resultado",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.6547154857095179,
+          "efecto(V Cramér)": 0.041,
+          "pct_celdas_esp<5": 16.7
+        },
+        {
+          "variable": "comision_aplicada",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.8009058478934834,
+          "efecto(V Cramér)": 0.045,
+          "pct_celdas_esp<5": 0.0
+        }
+      ],
+      "significativas": [],
+      "alfa_bonferroni": 0.0125,
+      "mecanismo_sugerido": "SIN EVIDENCIA CONTRA MCAR con las variables disponibles (no demuestra MCAR; MNAR no puede descartarse)"
+    },
+    {
+      "columna": "id_cajero",
+      "n_nulos": 42,
+      "poblacion": 600,
+      "pct_nulos": 7.0,
+      "nota_poblacion": "",
+      "pruebas": [
+        {
+          "variable": "resultado",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.34876093219479815,
+          "efecto(V Cramér)": 0.059,
+          "pct_celdas_esp<5": 0.0
+        },
+        {
+          "variable": "tipo_operacion",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.4096707470140629,
+          "efecto(V Cramér)": 0.069,
+          "pct_celdas_esp<5": 0.0
+        },
+        {
+          "variable": "comision_aplicada",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.5104238102908709,
+          "efecto(V Cramér)": 0.062,
+          "pct_celdas_esp<5": 0.0
+        },
+        {
+          "variable": "monto_mxn",
+          "prueba": "chi-cuadrada",
+          "p_valor": 0.8011567377710704,
+          "efecto(V Cramér)": 0.126,
+          "pct_celdas_esp<5": 46.7
+        }
+      ],
+      "significativas": [],
+      "alfa_bonferroni": 0.0125,
+      "mecanismo_sugerido": "SIN EVIDENCIA CONTRA MCAR con las variables disponibles (no demuestra MCAR; MNAR no puede descartarse)"
+    }
+  ],
+  "imputacion_numerica": {
+    "monto_mxn": {
+      "n_faltantes": 27,
+      "poblacion_aplicable": 503,
+      "pct_faltante": 5.37,
+      "imputado": true,
+      "medianas": {
+        "DEPOSITO": 4000.0,
+        "PAGO_SERVICIOS": 4000.0,
+        "RETIRO": 2000.0
+      },
+      "mediana_global": 3000.0,
+      "asimetria_observada": 21.8
+    }
+  },
+  "imputacion_categorica": {
+    "id_cajero": {
+      "etiqueta": "CAJERO_NO_REGISTRADO",
+      "n_imputados": 42
+    }
+  },
+  "atipicos": {
+    "RETIRO": {
+      "q1": 500.0,
+      "q3": 5000.0,
+      "iqr": 4500.0,
+      "lim_inf": -6250.0,
+      "lim_sup": 11750.0,
+      "ext_inf": -13000.0,
+      "ext_sup": 18500.0,
+      "evaluado": true,
+      "n": 246,
+      "n_leve_alto": 0,
+      "n_leve_bajo": 0,
+      "n_extremo_alto": 1,
+      "n_extremo_bajo": 0,
+      "maximo_observado": 3500000.0,
+      "minimo_observado": 200.0
+    },
+    "DEPOSITO": {
+      "q1": 500.0,
+      "q3": 8000.0,
+      "iqr": 7500.0,
+      "lim_inf": -10750.0,
+      "lim_sup": 19250.0,
+      "ext_inf": -22000.0,
+      "ext_sup": 30500.0,
+      "evaluado": true,
+      "n": 120,
+      "n_leve_alto": 0,
+      "n_leve_bajo": 0,
+      "n_extremo_alto": 0,
+      "n_extremo_bajo": 0,
+      "maximo_observado": 12000.0,
+      "minimo_observado": 500.0
+    },
+    "PAGO_SERVICIOS": {
+      "q1": 1500.0,
+      "q3": 8000.0,
+      "iqr": 6500.0,
+      "lim_inf": -8250.0,
+      "lim_sup": 17750.0,
+      "ext_inf": -18000.0,
+      "ext_sup": 27500.0,
+      "evaluado": true,
+      "n": 110,
+      "n_leve_alto": 0,
+      "n_leve_bajo": 0,
+      "n_extremo_alto": 0,
+      "n_extremo_bajo": 0,
+      "maximo_observado": 12000.0,
+      "minimo_observado": 500.0
+    }
+  },
+  "estados_monto": {
+    "POSITIVO": 476,
+    "CERO_ESPERADO": 97,
+    "FALTANTE": 27
+  },
+  "montos_winsorizados": 1,
+  "parametros": {
+    "factor_iqr": 1.5,
+    "factor_extremo": 3.0,
+    "min_n_segmento": 8,
+    "umbral_imputacion": 0.1,
+    "aplicar_capping": true
+  },
+  "advertencias": [
+    "Fechas sin zona horaria se asumieron en UTC-06:00 (confirmar con el equipo)."
+  ],
+  "columnas_nuevas": [
+    "flag_id_repetido",
+    "fecha_hora_std",
+    "fecha_formato_origen",
+    "monto_mxn_original",
+    "monto_estado",
+    "monto_atipico",
+    "flag_monto_imputado",
+    "flag_id_cajero_imputado",
+    "flag_monto_winsorizado"
+  ],
+  "perfil_inicial": {
+    "n_filas": 620,
+    "n_columnas": 8,
+    "columnas": [
+      {
+        "columna": "id_transaccion",
+        "dtype_pandas": "str",
+        "tipos_python": "str:620",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 600,
+        "ejemplos_frecuentes": "ATM-TX-00058(2); ATM-TX-00068(2); ATM-TX-00078(2)"
+      },
+      {
+        "columna": "fecha_hora",
+        "dtype_pandas": "str",
+        "tipos_python": "str:620",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 600,
+        "ejemplos_frecuentes": "2026/09/12 09:40:00(2); 2026/09/18 11:30:00(2); 07/10/2026 14:00(2)"
+      },
+      {
+        "columna": "id_cuenta",
+        "dtype_pandas": "str",
+        "tipos_python": "str:620",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 82,
+        "ejemplos_frecuentes": "CTA-0012(19); CTA-0011(18); CTA-0004(18)"
+      },
+      {
+        "columna": "tipo_operacion",
+        "dtype_pandas": "str",
+        "tipos_python": "str:620",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 4,
+        "ejemplos_frecuentes": "RETIRO(270); DEPOSITO(133); PAGO_SERVICIOS(116)"
+      },
+      {
+        "columna": "monto_mxn",
+        "dtype_pandas": "float64",
+        "tipos_python": "float:593",
+        "n_nulos": 27,
+        "pct_nulos": 4.35,
+        "n_unicos": 14,
+        "ejemplos_frecuentes": "0.0(101); 500.0(87); 12000.0(49)"
+      },
+      {
+        "columna": "id_cajero",
+        "dtype_pandas": "str",
+        "tipos_python": "str:576",
+        "n_nulos": 44,
+        "pct_nulos": 7.1,
+        "n_unicos": 5,
+        "ejemplos_frecuentes": "ATM-COL-01(126); ATM-MZL-01(124); ATM-TECO-01(113)"
+      },
+      {
+        "columna": "resultado",
+        "dtype_pandas": "str",
+        "tipos_python": "str:620",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 4,
+        "ejemplos_frecuentes": "EXITOSA(308); FALLO_CONEXION(120); FALLO_FONDOS(107)"
+      },
+      {
+        "columna": "comision_aplicada",
+        "dtype_pandas": "float64",
+        "tipos_python": "float:620",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 4,
+        "ejemplos_frecuentes": "0.0(171); 15.0(159); 34.8(155)"
+      }
+    ],
+    "duplicados_exactos": 20,
+    "ids_repetidos": 20,
+    "n_nulos_total": 71,
+    "inconsistencias": [
+      {
+        "columna": "resultado",
+        "tipo": "MAYUSCULAS_MEZCLADAS",
+        "cantidad": 85,
+        "detalle": "{'EXITOSA': 308, 'exitosa': 85}"
+      },
+      {
+        "columna": "fecha_hora",
+        "tipo": "FORMATOS_FECHA_MEZCLADOS",
+        "cantidad": 400,
+        "detalle": "d/d/d d:d:d=220; d/d/d d:d=200; d-d-d d:d:d=200"
+      },
+      {
+        "columna": "id_cuenta",
+        "tipo": "FUERA_DE_PATRON_ESPERADO",
+        "cantidad": 32,
+        "detalle": "patrón ^CTA-00\\d{2}$; ejemplos: ['CTA-8997', 'CTA-8207', 'CTA-9193']"
+      },
+      {
+        "columna": "monto_mxn",
+        "tipo": "MONTO_CERO",
+        "cantidad": 101,
+        "detalle": "puede ser legítimo (p. ej. consulta de saldo); ver monto_estado"
+      }
+    ]
+  },
+  "perfil_final": {
+    "n_filas": 600,
+    "n_columnas": 17,
+    "columnas": [
+      {
+        "columna": "id_transaccion",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 600,
+        "ejemplos_frecuentes": "ATM-TX-00001(1); ATM-TX-00002(1); ATM-TX-00003(1)"
+      },
+      {
+        "columna": "fecha_hora",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 600,
+        "ejemplos_frecuentes": "2026/09/15 08:45:00(1); 12/09/2026 13:26(1); 2026/09/28 11:15:00(1)"
+      },
+      {
+        "columna": "id_cuenta",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 82,
+        "ejemplos_frecuentes": "CTA-0012(19); CTA-0004(18); CTA-0011(17)"
+      },
+      {
+        "columna": "tipo_operacion",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 4,
+        "ejemplos_frecuentes": "RETIRO(262); DEPOSITO(127); PAGO_SERVICIOS(114)"
+      },
+      {
+        "columna": "monto_mxn",
+        "dtype_pandas": "float64",
+        "tipos_python": "float:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 14,
+        "ejemplos_frecuentes": "0.0(97); 500.0(84); 4000.0(57)"
+      },
+      {
+        "columna": "id_cajero",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 6,
+        "ejemplos_frecuentes": "ATM-COL-01(121); ATM-MZL-01(121); ATM-TECO-01(110)"
+      },
+      {
+        "columna": "resultado",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 3,
+        "ejemplos_frecuentes": "EXITOSA(379); FALLO_CONEXION(117); FALLO_FONDOS(104)"
+      },
+      {
+        "columna": "comision_aplicada",
+        "dtype_pandas": "float64",
+        "tipos_python": "float:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 4,
+        "ejemplos_frecuentes": "0.0(164); 15.0(153); 34.8(152)"
+      },
+      {
+        "columna": "flag_id_repetido",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 1,
+        "ejemplos_frecuentes": "False(600)"
+      },
+      {
+        "columna": "fecha_hora_std",
+        "dtype_pandas": "datetime64[us, UTC-06:00]",
+        "tipos_python": "Timestamp:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 598,
+        "ejemplos_frecuentes": "2026-09-06 10:59:00-06:00(2); 2026-09-23 23:41:00-06:00(2); 2026-09-15 08:45:00-"
+      },
+      {
+        "columna": "fecha_formato_origen",
+        "dtype_pandas": "str",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 3,
+        "ejemplos_frecuentes": "YYYY/MM/DD HH:MM:SS (sin zona)(211); YYYY-MM-DD HH:MM:SS (sin zona)(196); DD/MM/"
+      },
+      {
+        "columna": "monto_mxn_original",
+        "dtype_pandas": "float64",
+        "tipos_python": "float:573",
+        "n_nulos": 27,
+        "pct_nulos": 4.5,
+        "n_unicos": 14,
+        "ejemplos_frecuentes": "0.0(97); 500.0(84); 12000.0(48)"
+      },
+      {
+        "columna": "monto_estado",
+        "dtype_pandas": "object",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 3,
+        "ejemplos_frecuentes": "POSITIVO(476); CERO_ESPERADO(97); FALTANTE(27)"
+      },
+      {
+        "columna": "monto_atipico",
+        "dtype_pandas": "object",
+        "tipos_python": "str:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 3,
+        "ejemplos_frecuentes": "NO(475); NO_EVALUADO(124); EXTREMO_ALTO(1)"
+      },
+      {
+        "columna": "flag_monto_imputado",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "False(573); True(27)"
+      },
+      {
+        "columna": "flag_id_cajero_imputado",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "False(558); True(42)"
+      },
+      {
+        "columna": "flag_monto_winsorizado",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 2,
+        "ejemplos_frecuentes": "False(599); True(1)"
+      }
+    ],
+    "duplicados_exactos": 0,
+    "ids_repetidos": 0,
+    "n_nulos_total": 27,
+    "inconsistencias": [
+      {
+        "columna": "fecha_hora",
+        "tipo": "FORMATOS_FECHA_MEZCLADOS",
+        "cantidad": 389,
+        "detalle": "d/d/d d:d:d=211; d-d-d d:d:d=196; d/d/d d:d=193"
+      },
+      {
+        "columna": "id_cuenta",
+        "tipo": "FUERA_DE_PATRON_ESPERADO",
+        "cantidad": 32,
+        "detalle": "patrón ^CTA-00\\d{2}$; ejemplos: ['CTA-8997', 'CTA-8207', 'CTA-9193']"
+      },
+      {
+        "columna": "monto_mxn",
+        "tipo": "MONTO_CERO",
+        "cantidad": 97,
+        "detalle": "puede ser legítimo (p. ej. consulta de saldo); ver monto_estado"
+      }
+    ]
+  }
+}

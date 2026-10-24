@@ -1,0 +1,164 @@
+fuente,indice_original,id_registro,columna,valor_original,valor_nuevo,regla,detalle
+transferencias_digitales,14,SPEI-2026-00015,notification_email,,,CENTINELA_A_NULO,
+transferencias_digitales,91,SPEI-2026-00092,notification_email,,,CENTINELA_A_NULO,
+transferencias_digitales,110,SPEI-2026-00111,notification_email,,,CENTINELA_A_NULO,
+transferencias_digitales,131,SPEI-2026-00132,notification_email,,,CENTINELA_A_NULO,
+transferencias_digitales,296,SPEI-2026-00297,notification_email,,,CENTINELA_A_NULO,
+transferencias_digitales,303,SPEI-2026-00304,notification_email,,,CENTINELA_A_NULO,
+transferencias_digitales,370,SPEI-2026-00371,notification_email,,,CENTINELA_A_NULO,
+transferencias_digitales,496,SPEI-2026-00497,notification_email,,,CENTINELA_A_NULO,
+transferencias_digitales,4,SPEI-2026-00005,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,7,SPEI-2026-00008,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,9,SPEI-2026-00010,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,10,SPEI-2026-00011,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,18,SPEI-2026-00019,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,19,SPEI-2026-00020,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,32,SPEI-2026-00033,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,33,SPEI-2026-00034,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,35,SPEI-2026-00036,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,37,SPEI-2026-00038,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,43,SPEI-2026-00044,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,44,SPEI-2026-00045,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,50,SPEI-2026-00051,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,52,SPEI-2026-00053,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,69,SPEI-2026-00070,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,72,SPEI-2026-00073,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,76,SPEI-2026-00077,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,86,SPEI-2026-00087,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,87,SPEI-2026-00088,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,88,SPEI-2026-00089,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,92,SPEI-2026-00093,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,98,SPEI-2026-00099,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,100,SPEI-2026-00101,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,108,SPEI-2026-00109,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,115,SPEI-2026-00116,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,117,SPEI-2026-00118,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,123,SPEI-2026-00124,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,130,SPEI-2026-00131,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,131,SPEI-2026-00132,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,139,SPEI-2026-00140,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,141,SPEI-2026-00142,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,145,SPEI-2026-00146,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,152,SPEI-2026-00153,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,153,SPEI-2026-00154,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,156,SPEI-2026-00157,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,161,SPEI-2026-00162,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,165,SPEI-2026-00166,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,168,SPEI-2026-00169,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,173,SPEI-2026-00174,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,176,SPEI-2026-00177,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,177,SPEI-2026-00178,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,183,SPEI-2026-00184,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,186,SPEI-2026-00187,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,192,SPEI-2026-00193,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,199,SPEI-2026-00200,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,211,SPEI-2026-00212,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,214,SPEI-2026-00215,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,232,SPEI-2026-00233,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,233,SPEI-2026-00234,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,234,SPEI-2026-00235,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,240,SPEI-2026-00241,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,243,SPEI-2026-00244,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,245,SPEI-2026-00246,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,246,SPEI-2026-00247,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,248,SPEI-2026-00249,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,260,SPEI-2026-00261,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,263,SPEI-2026-00264,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,267,SPEI-2026-00268,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,278,SPEI-2026-00279,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,280,SPEI-2026-00281,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,281,SPEI-2026-00282,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,290,SPEI-2026-00291,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,291,SPEI-2026-00292,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,299,SPEI-2026-00300,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,308,SPEI-2026-00309,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,309,SPEI-2026-00310,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,311,SPEI-2026-00312,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,312,SPEI-2026-00313,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,314,SPEI-2026-00315,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,317,SPEI-2026-00318,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,318,SPEI-2026-00319,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,321,SPEI-2026-00322,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,327,SPEI-2026-00328,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,342,SPEI-2026-00343,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,346,SPEI-2026-00347,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,347,SPEI-2026-00348,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,351,SPEI-2026-00352,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,354,SPEI-2026-00355,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,357,SPEI-2026-00358,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,364,SPEI-2026-00365,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,365,SPEI-2026-00366,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,367,SPEI-2026-00368,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,370,SPEI-2026-00371,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,378,SPEI-2026-00379,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,387,SPEI-2026-00388,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,392,SPEI-2026-00393,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,398,SPEI-2026-00399,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,408,SPEI-2026-00409,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,426,SPEI-2026-00427,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,435,SPEI-2026-00436,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,438,SPEI-2026-00439,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,439,SPEI-2026-00440,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,440,SPEI-2026-00441,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,452,SPEI-2026-00453,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,454,SPEI-2026-00455,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,455,SPEI-2026-00456,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,460,SPEI-2026-00461,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,461,SPEI-2026-00462,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,468,SPEI-2026-00469,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,486,SPEI-2026-00487,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,494,SPEI-2026-00495,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,501,SPEI-2026-00502,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,509,SPEI-2026-00510,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,515,SPEI-2026-00516,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,516,SPEI-2026-00517,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,520,SPEI-2026-00521,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,527,SPEI-2026-00528,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,529,SPEI-2026-00530,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,533,SPEI-2026-00534,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,534,SPEI-2026-00535,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,546,SPEI-2026-00547,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,551,SPEI-2026-00552,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,552,SPEI-2026-00553,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,553,SPEI-2026-00554,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,556,SPEI-2026-00557,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,559,SPEI-2026-00560,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,560,SPEI-2026-00561,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,576,SPEI-2026-00577,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,579,SPEI-2026-00580,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,592,SPEI-2026-00593,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,596,SPEI-2026-00597,status,liquidada,LIQUIDADA,NORMALIZAR_MAYUSCULAS,
+transferencias_digitales,14,SPEI-2026-00015,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,91,SPEI-2026-00092,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,110,SPEI-2026-00111,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,131,SPEI-2026-00132,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,240,SPEI-2026-00241,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,260,SPEI-2026-00261,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,293,SPEI-2026-00294,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,296,SPEI-2026-00297,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,303,SPEI-2026-00304,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,345,SPEI-2026-00346,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,361,SPEI-2026-00362,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,370,SPEI-2026-00371,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,372,SPEI-2026-00373,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,493,SPEI-2026-00494,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,496,SPEI-2026-00497,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,501,SPEI-2026-00502,notification_email,,SIN_CORREO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=SIN_CORREO
+transferencias_digitales,21,SPEI-2026-00022,amount,5141233.5,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,100,SPEI-2026-00101,amount,1325872.5,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,108,SPEI-2026-00109,amount,5240100.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,141,SPEI-2026-00142,amount,5001225.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,185,SPEI-2026-00186,amount,4604904.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,330,SPEI-2026-00331,amount,1361187.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,375,SPEI-2026-00376,amount,2072223.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,392,SPEI-2026-00393,amount,199902.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,420,SPEI-2026-00421,amount,1456236.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,453,SPEI-2026-00454,amount,2806686.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,459,SPEI-2026-00460,amount,3179809.5,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,474,SPEI-2026-00475,amount,2754598.5,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,499,SPEI-2026-00500,amount,370996.5,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,567,SPEI-2026-00568,amount,2581932.0,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,573,SPEI-2026-00574,amount,2745655.5,50667.57,WINSORIZACION_IQR,"segmento=MXN; lim_sup=50,667.57; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,8,SPEI-2026-00009,amount,4141401.0,49975.76,WINSORIZACION_IQR,"segmento=USD; lim_sup=49,975.76; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,18,SPEI-2026-00019,amount,2893386.0,49975.76,WINSORIZACION_IQR,"segmento=USD; lim_sup=49,975.76; factor=1.5; extremo>3.0*IQR"
+transferencias_digitales,41,SPEI-2026-00042,amount,707211.0,49975.76,WINSORIZACION_IQR,"segmento=USD; lim_sup=49,975.76; factor=1.5; extremo>3.0*IQR"
