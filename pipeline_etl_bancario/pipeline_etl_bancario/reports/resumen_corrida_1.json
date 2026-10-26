@@ -1,0 +1,65 @@
+{
+  "id_corrida": 1,
+  "fecha_ejecucion": "2026-10-26T02:45:28+00:00",
+  "duracion_segundos": 0.049,
+  "estado": "COMPLETADA",
+  "fuentes": {
+    "ATM": {
+      "ruta": "/home/claude/pipeline_etl_bancario/data/demo/transacciones_atm.csv",
+      "estado": "OK",
+      "leidos": 203,
+      "rechazados_lectura": 2,
+      "error": null
+    },
+    "DIGITAL": {
+      "ruta": "/home/claude/pipeline_etl_bancario/data/demo/transferencias_digitales.json",
+      "estado": "OK",
+      "leidos": 204,
+      "rechazados_lectura": 3,
+      "error": null
+    }
+  },
+  "leidos": 407,
+  "validos": 380,
+  "rechazados": 27,
+  "rechazados_en_lectura_y_limpieza": 5,
+  "almacenados_limpias": 380,
+  "duplicados_omitidos": 0,
+  "conflictos": 0,
+  "almacenados_cuarentena": 27,
+  "duplicados_cuarentena_omitidos": 0,
+  "totales_en_bd": {
+    "transacciones_limpias": 380,
+    "cuarentena_errores": 27,
+    "corridas_pipeline": 1
+  },
+  "motivos_rechazo": {
+    "fila_malformada": 5,
+    "monto no positivo": 4,
+    "monto ausente o no numérico": 3,
+    "id_origen duplicado en el lote": 2,
+    "cuenta_origen ausente": 2,
+    "monto anómalo (excede el máximo)": 2,
+    "cuenta inexistente en catálogo": 2,
+    "fecha_hora ausente o inválida": 2,
+    "cuenta_destino ausente en transferencia": 1,
+    "moneda ausente o no reconocida": 1,
+    "tipo_transaccion ausente o no reconocido": 1,
+    "cuenta_destino igual a cuenta_origen": 1,
+    "fecha_hora en el futuro": 1
+  },
+  "catalogo": {
+    "origen": "SINTETICO",
+    "cuentas": 100
+  },
+  "modulos": {
+    "limpieza_datos": "referencia",
+    "integracion_datos": "referencia",
+    "validacion_cuarentena": "referencia"
+  },
+  "base_de_datos": "/home/claude/pipeline_etl_bancario/banco_etl.db",
+  "advertencias": [
+    "Se usó un catálogo SINTÉTICO: solo válido para pruebas; no verifica cuentas reales.",
+    "Se usaron módulos de REFERENCIA para: limpieza_datos, integracion_datos, validacion_cuarentena. Sustituir por los módulos reales de los integrantes 1-3."
+  ]
+}
