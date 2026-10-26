@@ -1,6 +1,0 @@
-# El pipeline y sus pruebas usan SOLO la biblioteca estándar de Python (sqlite3, csv, json, unittest).
-# No hay dependencias obligatorias.
-#
-# Opcional: si los módulos de los integrantes 1-3 usan pandas, descomentar.
-# main.py acepta DataFrames de pandas como salida de esos módulos.
-# pandas>=2.0
