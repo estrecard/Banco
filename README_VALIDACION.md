@@ -28,6 +28,8 @@ validos, rechazados = validar_transacciones(resultado.datos.to_dict(orient="reco
 
 También acepta `catalogo_cuentas=set_de_ids` para volver a comprobar pertenencia. Sin él se exige `cuenta_en_catalogo=True`, proporcionado por integración; un valor desconocido no se confunde con una cuenta inexistente.
 
+El catálogo explícito sustituye la comprobación de pertenencia anterior, incluido un error `CUENTA_HUERFANA` antiguo. Las señales históricas se conservan en `registro_integrado`; otros errores siguen vigentes. Para decidir el destino se deben usar las dos listas devueltas, no reinterpretar las señales históricas.
+
 La función devuelve listas de diccionarios JSON compatibles y no modifica las entradas. Usa un `BaseModel`, validadores de campo y captura de `ValidationError` por registro. Un dato inválido no interrumpe los siguientes. Los importes normalizados son cadenas decimales y las fechas conservan su zona horaria.
 
 Cada rechazado incluye `motivo_rechazo_cuarentena`, `errores_validacion` (campo, código, mensaje), `registro_original`, `registro_integrado`, identidad y posición en el lote. Los errores usan mensajes controlados sin valores de entrada. Los números no finitos en auditoría se representan mediante etiquetas JSON para conservar su señal.

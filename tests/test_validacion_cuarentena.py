@@ -148,12 +148,23 @@ def test_pertenencia_no_verificada_o_huerfana(pertenencia, codigo):
     assert codigo in {e["codigo"] for e in rechazado["errores_validacion"]}
 
 
-def test_catalogo_real_sustituye_indicador_y_catalogo_vacio_no_es_ausencia():
-    validos, rechazados = validar_transacciones([transaccion(cuenta_en_catalogo=False)], catalogo_cuentas={"CTA-0001"})
+@pytest.mark.parametrize("indicador", ["", "CUENTA_HUERFANA"])
+def test_catalogo_real_sustituye_indicador_y_catalogo_vacio_no_es_ausencia(indicador):
+    registro = transaccion(cuenta_en_catalogo=False, indicadores_error=indicador)
+    validos, rechazados = validar_transacciones([registro], catalogo_cuentas={"CTA-0001"})
     assert len(validos) == 1 and rechazados == []
+    assert validos[0]["registro_integrado"]["indicadores_error"] == indicador
+    assert validos[0]["cuenta_en_catalogo"] is True
     validos, rechazados = validar_transacciones([transaccion(cuenta_en_catalogo=True)], catalogo_cuentas=set())
     assert validos == [] and len(rechazados) == 1
     assert "CUENTA_HUERFANA" in {e["codigo"] for e in rechazados[0]["errores_validacion"]}
+
+
+def test_catalogo_actualizado_no_oculta_otros_errores():
+    registro = transaccion(cuenta_en_catalogo=False, indicadores_error="CUENTA_HUERFANA|FECHA_INVALIDA")
+    validos, rechazados = validar_transacciones([registro], catalogo_cuentas={"CTA-0001"})
+    assert not validos
+    assert {e["codigo"] for e in rechazados[0]["errores_validacion"]} == {"FECHA_INVALIDA"}
 
 
 @pytest.mark.parametrize("indicador", [

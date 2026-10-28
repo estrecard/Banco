@@ -25,7 +25,9 @@ $env:ETL_DATOS_DIR = (Resolve-Path data/raw).Path
 python -m pytest tests test_integracion_datos.py -q --tb=short -p no:cacheprovider
 ```
 
-Resultado observado: **134 passed, 3 warnings**, código 0. Comprende las 66 pruebas existentes de integración y 68 casos adicionales de validación/flujo. Las tres advertencias son de una fixture existente de pytest, obsoleta para pytest 10; no hubo fallos.
+Resultado observado tras la corrección final: **136 passed, 3 warnings**, código 0, en 17.08 segundos. Comprende las 66 pruebas existentes de integración y 70 casos adicionales de validación/flujo. Las tres advertencias son de una fixture existente de pytest, obsoleta para pytest 10; no hubo fallos.
+
+Se corrigió la revalidación con catálogo explícito: una señal histórica `CUENTA_HUERFANA` ya no provoca rechazo si el catálogo actualizado contiene la cuenta. Se conserva la señal en `registro_integrado`, y los otros motivos de rechazo siguen vigentes. Las pruebas de regresión cubren ambas condiciones.
 
 Entorno usado: Python 3.12, Pydantic 2.14.1, Pandas 3.0.6, NumPy 2.5.3, pytest 9.1.1. También pasó git diff --check.
 

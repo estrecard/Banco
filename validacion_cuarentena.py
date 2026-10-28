@@ -273,6 +273,9 @@ def validar_transacciones(
         if es_registro and catalogo_cuentas is not None:
             cuenta = datos.get("id_cuenta")
             datos["cuenta_en_catalogo"] = isinstance(cuenta, str) and cuenta in catalogo_cuentas
+            # El catálogo explícito sustituye la comprobación anterior. La
+            # señal histórica permanece intacta dentro de registro_integrado.
+            errores = [e for e in errores if e["codigo"] != "CUENTA_HUERFANA"]
         try:
             modelo = TransaccionBancaria.model_validate(datos)
         except ValidationError as exc:
