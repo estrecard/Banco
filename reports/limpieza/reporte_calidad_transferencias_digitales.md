@@ -1,16 +1,16 @@
 # Reporte de calidad: transferencias_digitales
 
-Generado: 2026-10-23 23:44  |  Módulo: `limpieza_datos.py`
+Generado: 2026-10-27 09:35  |  Módulo: `limpieza_datos.py`
 
 ## 1. Resumen antes / después
 
 | Métrica | Antes | Después |
 | --- | --- | --- |
 | Filas | 600 | 600 |
-| Columnas | 10 | 19 (+9 derivadas de auditoría) |
+| Columnas | 10 | 20 (+10 derivadas de auditoría) |
 | Celdas nulas (columnas originales) | 8 | 0 |
-| Filas duplicadas exactas | 0 | 0 |
-| IDs repetidos | 0 | 0 |
+| Filas duplicadas exactas | 0 | 0 marcadas con ind_duplicado_exacto; 0 excluidas |
+| IDs con contenido distinto (conflicto) | 0 | 0 |
 | Montos winsorizados | 0 | 18 |
 
 ## 2. Perfil inicial
@@ -19,16 +19,16 @@ Generado: 2026-10-23 23:44  |  Módulo: `limpieza_datos.py`
 
 | columna | dtype_pandas | tipos_python | n_nulos | pct_nulos | n_unicos | ejemplos_frecuentes |
 | --- | --- | --- | --- | --- | --- | --- |
-| transfer_id | str | str:600 | 0 | 0.00 | 600 | SPEI-2026-00001(1); SPEI-2026-00002(1); SPEI-2026-00003(1) |
-| timestamp | object | str:405, int:195 | 0 | 0.00 | 598 | 2026-09-16T19:59:00-06:00(2); 2026-09-15T08:39:00-06:00(2); 2026-09-12T19:49:00- |
-| account_id | str | str:600 | 0 | 0.00 | 79 | CTA-0010(16); CTA-0042(16); CTA-0040(16) |
-| amount | float64 | float:600 | 0 | 0.00 | 600 | 19844.18(1); 33048.19(1); 28312.37(1) |
-| currency | str | str:600 | 0 | 0.00 | 2 | MXN(466); USD(134) |
-| beneficiary_clabe | str | str:600 | 0 | 0.00 | 555 | 12345(46); 012210100614023846(1); 012851851854195836(1) |
-| notification_email | str | str:592 | 8 | 1.33 | 419 | correo@@sinformato(19); invalido.com(11); (8) |
-| concept | str | str:600 | 0 | 0.00 | 6 | Servicios(116); Préstamo(108); Nómina(95) |
-| status | str | str:600 | 0 | 0.00 | 5 | DEVUELTA(132); liquidada(121); RECHAZADA(117) |
-| platform | str | str:600 | 0 | 0.00 | 4 | API Empresarial(166); Web Banking(150); App Android(145) |
+| transfer_id | object | str:600 | 0 | 0.00 | 600 | SPEI-2026-00001(1); SPEI-2026-00395(1); SPEI-2026-00397(1) |
+| timestamp | object | str:405, int:195 | 0 | 0.00 | 598 | 2026-09-15T08:39:00-06:00(2); 2026-09-16T19:59:00-06:00(2); 1789866960(1) |
+| account_id | object | str:600 | 0 | 0.00 | 79 | CTA-0042(16); CTA-0040(16); CTA-0010(16) |
+| amount | float64 | float:600 | 0 | 0.00 | 600 | 19844.18(1); 20801.3(1); 17098.54(1) |
+| currency | object | str:600 | 0 | 0.00 | 2 | MXN(466); USD(134) |
+| beneficiary_clabe | object | str:600 | 0 | 0.00 | 555 | 12345(46); 012210100614023846(1); 012238560411480029(1) |
+| notification_email | object | str:592 | 8 | 1.33 | 419 | correo@@sinformato(19); invalido.com(11); (8) |
+| concept | object | str:600 | 0 | 0.00 | 6 | Servicios(116); Préstamo(108); Nómina(95) |
+| status | object | str:600 | 0 | 0.00 | 5 | DEVUELTA(132); liquidada(121); RECHAZADA(117) |
+| platform | object | str:600 | 0 | 0.00 | 4 | API Empresarial(166); Web Banking(150); App Android(145) |
 
 ### Inconsistencias detectadas
 
@@ -68,7 +68,7 @@ _Umbral Bonferroni: p < 0.0100_
 | NULO_A_ETIQUETA_CONTROLADA | 16 |
 | CENTINELA_A_NULO | 8 |
 
-Detalle celda a celda (valor original -> valor nuevo): `*_auditoria_cambios.csv`. Filas duplicadas retiradas: `*_duplicados_excluidos.csv`.
+Detalle celda a celda (valor original -> valor nuevo): `*_auditoria_cambios.csv`. Copias exactas detectadas (evidencia): `*_duplicados_detectados.csv`.
 
 ### Imputación
 
@@ -77,7 +77,7 @@ Detalle celda a celda (valor original -> valor nuevo): `*_auditoria_cambios.csv`
 
 ### Estados de monto (sin modificar)
 
-| monto_estado | n |
+| ind_monto_estado | n |
 | --- | --- |
 | POSITIVO | 600 |
 
@@ -101,25 +101,26 @@ Se calcula por segmento sobre montos observados > 0. **Leve** = fuera de Q±1.5�
 
 | columna | dtype_pandas | tipos_python | n_nulos | pct_nulos | n_unicos | ejemplos_frecuentes |
 | --- | --- | --- | --- | --- | --- | --- |
-| transfer_id | str | str:600 | 0 | 0.00 | 600 | SPEI-2026-00001(1); SPEI-2026-00002(1); SPEI-2026-00003(1) |
-| timestamp | object | str:405, int:195 | 0 | 0.00 | 598 | 2026-09-16T19:59:00-06:00(2); 2026-09-15T08:39:00-06:00(2); 2026-09-12T19:49:00- |
-| account_id | str | str:600 | 0 | 0.00 | 79 | CTA-0010(16); CTA-0042(16); CTA-0040(16) |
+| transfer_id | object | str:600 | 0 | 0.00 | 600 | SPEI-2026-00001(1); SPEI-2026-00395(1); SPEI-2026-00397(1) |
+| timestamp | object | str:405, int:195 | 0 | 0.00 | 598 | 2026-09-15T08:39:00-06:00(2); 2026-09-16T19:59:00-06:00(2); 1789866960(1) |
+| account_id | object | str:600 | 0 | 0.00 | 79 | CTA-0042(16); CTA-0040(16); CTA-0010(16) |
 | amount | float64 | float:600 | 0 | 0.00 | 584 | 50667.57(15); 49975.76(3); 19844.18(1) |
-| currency | str | str:600 | 0 | 0.00 | 2 | MXN(466); USD(134) |
-| beneficiary_clabe | str | str:600 | 0 | 0.00 | 555 | 12345(46); 012210100614023846(1); 012851851854195836(1) |
-| notification_email | str | str:600 | 0 | 0.00 | 419 | correo@@sinformato(19); SIN_CORREO(16); invalido.com(11) |
-| concept | str | str:600 | 0 | 0.00 | 6 | Servicios(116); Préstamo(108); Nómina(95) |
-| status | str | str:600 | 0 | 0.00 | 4 | LIQUIDADA(236); DEVUELTA(132); RECHAZADA(117) |
-| platform | str | str:600 | 0 | 0.00 | 4 | API Empresarial(166); Web Banking(150); App Android(145) |
-| flag_id_repetido | bool | bool:600 | 0 | 0.00 | 1 | False(600) |
-| fecha_hora_std | datetime64[us, UTC-06:00] | Timestamp:600 | 0 | 0.00 | 594 | 2026-10-14 23:04:00-06:00(2); 2026-09-16 19:59:00-06:00(2); 2026-09-15 08:39:00- |
-| fecha_formato_origen | str | str:600 | 0 | 0.00 | 2 | ISO8601 con offset(405); EPOCH segundos(195) |
-| amount_original | float64 | float:600 | 0 | 0.00 | 600 | 19844.18(1); 33048.19(1); 28312.37(1) |
-| monto_estado | object | str:600 | 0 | 0.00 | 1 | POSITIVO(600) |
-| monto_atipico | object | str:600 | 0 | 0.00 | 2 | NO(582); EXTREMO_ALTO(18) |
-| flag_monto_imputado | bool | bool:600 | 0 | 0.00 | 1 | False(600) |
-| flag_notification_email_imputado | bool | bool:600 | 0 | 0.00 | 2 | False(584); True(16) |
-| flag_monto_winsorizado | bool | bool:600 | 0 | 0.00 | 2 | False(582); True(18) |
+| currency | object | str:600 | 0 | 0.00 | 2 | MXN(466); USD(134) |
+| beneficiary_clabe | object | str:600 | 0 | 0.00 | 555 | 12345(46); 012210100614023846(1); 012238560411480029(1) |
+| notification_email | object | str:600 | 0 | 0.00 | 419 | correo@@sinformato(19); SIN_CORREO(16); invalido.com(11) |
+| concept | object | str:600 | 0 | 0.00 | 6 | Servicios(116); Préstamo(108); Nómina(95) |
+| status | object | str:600 | 0 | 0.00 | 4 | LIQUIDADA(236); DEVUELTA(132); RECHAZADA(117) |
+| platform | object | str:600 | 0 | 0.00 | 4 | API Empresarial(166); Web Banking(150); App Android(145) |
+| ind_duplicado_exacto | bool | bool:600 | 0 | 0.00 | 1 | False(600) |
+| ind_id_repetido | bool | bool:600 | 0 | 0.00 | 1 | False(600) |
+| fecha_hora_std | datetime64[ns, UTC-06:00] | Timestamp:600 | 0 | 0.00 | 594 | 2026-09-19 07:28:00-06:00(2); 2026-10-14 23:04:00-06:00(2); 2026-09-03 17:47:00- |
+| fecha_formato_origen | object | str:600 | 0 | 0.00 | 2 | ISO8601 con offset(405); EPOCH segundos(195) |
+| ind_monto_original | float64 | float:600 | 0 | 0.00 | 600 | 19844.18(1); 20801.3(1); 17098.54(1) |
+| ind_monto_estado | object | str:600 | 0 | 0.00 | 1 | POSITIVO(600) |
+| ind_monto_atipico | object | str:600 | 0 | 0.00 | 2 | NO(582); EXTREMO_ALTO(18) |
+| ind_monto_imputado | bool | bool:600 | 0 | 0.00 | 1 | False(600) |
+| ind_notification_email_imputado | bool | bool:600 | 0 | 0.00 | 2 | False(584); True(16) |
+| ind_monto_recortado | bool | bool:600 | 0 | 0.00 | 2 | False(582); True(18) |
 
 ## 7. Gráficas
 

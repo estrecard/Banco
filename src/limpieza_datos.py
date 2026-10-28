@@ -18,16 +18,21 @@ INTERFAZ PÚBLICA (contrato con el Integrante 2 y el Integrante 3)
       fecha_hora_std          fecha estandarizada (ISO 8601, zona UTC-06:00)
       fecha_formato_origen    formato detectado en la fuente
       <monto>_original        monto tal como llegó (antes de imputar / winsorizar)
-      monto_estado            FALTANTE | POSITIVO | CERO_ESPERADO | CERO_REVISAR | NEGATIVO_REVISAR
-      monto_atipico           NO | LEVE_ALTO | EXTREMO_ALTO | LEVE_BAJO | EXTREMO_BAJO | NO_EVALUADO
-      flag_monto_imputado     True si el monto se imputó con mediana
-      flag_monto_winsorizado  True si el monto se recortó al límite IQR
-      flag_<col>_imputado     True si la etiqueta categórica controlada reemplazó un nulo
-      flag_id_repetido        True si el ID se repite con contenido DISTINTO (conflicto, no se elimina)
+      ind_monto_original      monto tal como llegó (antes de imputar / recortar)
+      ind_monto_estado        FALTANTE | POSITIVO | CERO_ESPERADO | CERO_REVISAR | NEGATIVO_REVISAR
+      ind_monto_atipico       NO | LEVE_ALTO | EXTREMO_ALTO | LEVE_BAJO | EXTREMO_BAJO | NO_EVALUADO
+      ind_monto_imputado      True si el monto se imputó con mediana
+      ind_monto_recortado     True si el monto se recortó (winsorización) al límite IQR
+      ind_<col>_imputado      True si la etiqueta categórica controlada reemplazó un nulo
+      ind_duplicado_exacto    True en las copias exactas posteriores a la primera aparición
+      ind_id_repetido         True si el ID se repite con contenido DISTINTO (conflicto, no se elimina)
+  Convención: las columnas con prefijo ``ind_`` son las que el módulo de integración (Integrante 2) copia
+  hacia su esquema común. Por defecto NO se elimina ninguna fila (excluir_duplicados=False).
   El índice del DataFrame conserva el número de fila original (trazabilidad hacia el archivo fuente).
 * ``resumen``: diccionario con estadísticas y decisiones. Incluye además dos DataFrames:
       resumen["auditoria"]            bitácora celda a celda (valor original -> valor nuevo, regla aplicada)
-      resumen["duplicados_excluidos"] filas duplicadas retiradas del flujo principal (evidencia, sin borrar)
+      resumen["duplicados_detectados"] copias exactas detectadas (evidencia; se excluyen del flujo solo si
+                                       excluir_duplicados=True, alias: resumen["duplicados_excluidos"])
 
 LÍMITES DE RESPONSABILIDAD
 --------------------------
@@ -113,6 +118,7 @@ PARAMETROS_POR_DEFECTO = {
     "min_n_segmento": 8,             # mínimo de observaciones para calcular IQR / mediana por segmento
     "umbral_imputacion": 0.10,       # no se imputa si falta más del 10 % de la población aplicable
     "aplicar_capping": True,
+    "excluir_duplicados": False,     # False: las copias exactas se conservan y se marcan (ind_duplicado_exacto)
 }
 
 
@@ -213,7 +219,7 @@ def _forma(valor: Any) -> str:
 # ----------------------------------------------------------------------------------------------------------------
 # Perfil de calidad
 # ----------------------------------------------------------------------------------------------------------------
-def perfilar_calidad(df: pd.DataFrame, config: dict[str, Any]) -> dict[str, Any]:
+def perfilar_calidad(df: pd.DataFrame, config: dict[str, Any], cols_dup: list[str] | None = None) -> dict[str, Any]:
     """Perfil de calidad: tamaño, tipos, nulos, duplicados, únicos e inconsistencias detectadas."""
     n, k = df.shape
     filas_col = []
@@ -280,13 +286,13 @@ def perfilar_calidad(df: pd.DataFrame, config: dict[str, Any]) -> dict[str, Any]
             inconsist.append({"columna": cm, "tipo": "MONTO_NEGATIVO", "cantidad": int((m < 0).sum()), "detalle": ""})
         if (m == 0).any():
             inconsist.append({"columna": cm, "tipo": "MONTO_CERO", "cantidad": int((m == 0).sum()),
-                              "detalle": "puede ser legítimo (p. ej. consulta de saldo); ver monto_estado"})
+                              "detalle": "puede ser legítimo (p. ej. consulta de saldo); ver ind_monto_estado"})
     ci = config.get("col_id")
     ids_rep = int(df[ci].duplicated().sum()) if ci else 0
 
     return {
         "n_filas": int(n), "n_columnas": int(k), "columnas": columnas,
-        "duplicados_exactos": int(df.astype(str).duplicated().sum()),
+        "duplicados_exactos": int(df[cols_dup or list(df.columns)].astype(str).duplicated().sum()),
         "ids_repetidos": ids_rep,
         "n_nulos_total": int(df.isna().sum().sum()),
         "inconsistencias": pd.DataFrame(inconsist, columns=["columna", "tipo", "cantidad", "detalle"]),
@@ -366,22 +372,28 @@ def normalizar_texto(df: pd.DataFrame, cfg: dict[str, Any], auditoria: list) -> 
     return df
 
 
-def detectar_duplicados(df: pd.DataFrame, datos_crudos: pd.DataFrame, cfg: dict[str, Any], auditoria: list):
-    """Separa los duplicados exactos (se conserva la primera aparición). Las filas retiradas NO se destruyen:
-    se devuelven en un DataFrame aparte con la referencia a la fila que se conservó."""
+def detectar_duplicados(df: pd.DataFrame, datos_crudos: pd.DataFrame, cfg: dict[str, Any], auditoria: list,
+                        excluir: bool = False):
+    """Detecta duplicados exactos (se considera 'original' la primera aparición).
+
+    Por defecto NO se elimina ninguna fila: las copias se marcan (ind_duplicado_exacto) para que la validación
+    y la cuarentena decidan. Con excluir=True se retiran del flujo principal. En ambos casos la evidencia
+    se devuelve en un DataFrame aparte con la referencia a la fila original. Devuelve (df, evidencia, máscara)."""
     marca = df.duplicated(keep="first")
-    primera = df[~marca].reset_index().set_index(list(df.columns))["index"] if marca.any() else None
     dups = datos_crudos.loc[marca[marca].index].copy()
     if marca.any():
+        primera = df[~marca].reset_index().set_index(list(df.columns))["index"]
         claves = pd.MultiIndex.from_frame(df.loc[marca[marca].index])
         dups["duplicado_de_indice"] = primera.reindex(claves).values
         dups["motivo"] = "DUPLICADO_EXACTO (tras normalizar texto)"
+        regla = "DUPLICADO_EXACTO_EXCLUIDO" if excluir else "DUPLICADO_EXACTO_MARCADO"
+        destino = "excluida del flujo principal" if excluir else "se conserva; ind_duplicado_exacto = True"
         for idx in dups.index:
             auditoria.append({"fuente": cfg["nombre"], "indice_original": idx,
                               "id_registro": df.loc[idx, cfg["col_id"]], "columna": "*", "valor_original": "fila completa",
-                              "valor_nuevo": "excluida del flujo principal", "regla": "DUPLICADO_EXACTO_EXCLUIDO",
+                              "valor_nuevo": destino, "regla": regla,
                               "detalle": f"idéntica a la fila {dups.loc[idx, 'duplicado_de_indice']}"})
-    return df[~marca].copy(), dups
+    return (df[~marca].copy() if excluir else df.copy()), dups, marca
 
 
 def analizar_faltantes(df: pd.DataFrame, cfg: dict[str, Any], alfa: float = 0.05, max_card: int = 20,
@@ -480,17 +492,21 @@ def calcular_limites_iqr(valores: pd.Series, factor: float = 1.5, factor_extremo
 
 
 def detectar_atipicos_iqr(monto: pd.Series, segmento: pd.Series | None, seg_cero: set, factor: float,
-                          factor_extremo: float, min_n: int) -> tuple[pd.Series, dict[str, dict]]:
+                          factor_extremo: float, min_n: int,
+                          excluir_stats: pd.Series | None = None) -> tuple[pd.Series, dict[str, dict]]:
     """Detecta atípicos por IQR dentro de cada segmento, usando solo montos observados y > 0.
     No se mezclan segmentos con escalas distintas (tipos de operación, monedas) ni se incluyen los $0 estructurales."""
     seg = segmento if segmento is not None else pd.Series("TODOS", index=monto.index)
     base = monto.where(~seg.isin(seg_cero) & (monto > 0))
+    # Los cuartiles se calculan sin las copias exactas (para no contar dos veces el mismo evento),
+    # pero la etiqueta se asigna a todas las filas.
+    base_stats = base.where(~excluir_stats) if excluir_stats is not None else base
     etiqueta = pd.Series("NO_EVALUADO", index=monto.index, dtype=object)
     limites: dict[str, dict] = {}
     for valor_seg in seg.dropna().unique():
         idx = seg.index[seg == valor_seg]
         x = base.loc[idx]
-        obs = x.dropna()
+        obs = base_stats.loc[idx].dropna()
         if valor_seg in seg_cero:
             continue
         if len(obs) < min_n:
@@ -500,7 +516,7 @@ def detectar_atipicos_iqr(monto: pd.Series, segmento: pd.Series | None, seg_cero
         if lim["iqr"] == 0:
             limites[str(valor_seg)] = {"evaluado": False, "motivo": "IQR = 0", "n": int(len(obs))}
             continue
-        etiqueta.loc[obs.index] = "NO"
+        etiqueta.loc[x.dropna().index] = "NO"
         etiqueta.loc[x.index[x > lim["lim_sup"]]] = "LEVE_ALTO"
         etiqueta.loc[x.index[x < lim["lim_inf"]]] = "LEVE_BAJO"
         etiqueta.loc[x.index[x > lim["ext_sup"]]] = "EXTREMO_ALTO"
@@ -515,7 +531,8 @@ def detectar_atipicos_iqr(monto: pd.Series, segmento: pd.Series | None, seg_cero
     return etiqueta, limites
 
 
-def imputar_mediana(monto: pd.Series, segmento: pd.Series | None, seg_cero: set, umbral: float, min_n: int):
+def imputar_mediana(monto: pd.Series, segmento: pd.Series | None, seg_cero: set, umbral: float, min_n: int,
+                    excluir_stats: pd.Series | None = None):
     """Imputa montos faltantes con la mediana (robusta a asimetría y atípicos) del segmento.
 
     Es 'estadísticamente apropiado' solo si: (a) falta menos del umbral de la población aplicable, (b) hay al menos
@@ -532,7 +549,7 @@ def imputar_mediana(monto: pd.Series, segmento: pd.Series | None, seg_cero: set,
     if faltan.sum() / aplicable.sum() > umbral:
         info["motivo"] = f"faltante > {umbral:.0%} de la población aplicable: no se imputa"
         return monto, pd.Series(False, index=monto.index), info
-    validos = monto.where(aplicable & (monto > 0))
+    validos = monto.where(aplicable & (monto > 0) & ~(excluir_stats if excluir_stats is not None else False))
     if validos.count() < min_n:
         info["motivo"] = "muy pocos valores observados"
         return monto, pd.Series(False, index=monto.index), info
@@ -561,7 +578,7 @@ def imputar_categoricas(df: pd.DataFrame, cfg: dict[str, Any], auditoria: list):
             _registrar(auditoria, cfg["nombre"], df, cfg["col_id"], mask, col, df[col], etiqueta,
                        "NULO_A_ETIQUETA_CONTROLADA", f"etiqueta={etiqueta}")
             df.loc[mask, col] = etiqueta
-        df[f"flag_{col}_imputado"] = mask
+        df[f"ind_{col}_imputado"] = mask
     return info
 
 
@@ -606,11 +623,18 @@ def limpiar_datos(datos: pd.DataFrame | list[dict], config: str | dict | None = 
     df[cm] = monto_num
 
     # 3) Duplicados exactos: se separan, no se destruyen
-    df, df_dups = detectar_duplicados(df, crudo, cfg, auditoria)
-    df["flag_id_repetido"] = df[col_id].duplicated(keep=False)  # mismo ID con contenido distinto = conflicto
-    n_conflictos = int(df["flag_id_repetido"].sum())
+    df, df_dups, marca_dup = detectar_duplicados(df, crudo, cfg, auditoria, par["excluir_duplicados"])
+    df["ind_duplicado_exacto"] = marca_dup.reindex(df.index).fillna(False).astype(bool)
+    es_copia = df["ind_duplicado_exacto"]
+    df["ind_id_repetido"] = False  # mismo ID con contenido distinto = conflicto (las copias exactas no cuentan)
+    ids = df.loc[~es_copia, col_id]
+    df.loc[ids.index, "ind_id_repetido"] = ids.duplicated(keep=False)
+    n_conflictos = int(df["ind_id_repetido"].sum())
     if n_conflictos:
-        advertencias.append(f"{n_conflictos} filas comparten ID con contenido distinto (no se eliminan; ver flag_id_repetido).")
+        advertencias.append(f"{n_conflictos} filas comparten ID con contenido distinto (no se eliminan; ver ind_id_repetido).")
+    if len(df_dups) and not par["excluir_duplicados"]:
+        advertencias.append(f"{len(df_dups)} copias exactas se conservaron y se marcaron con ind_duplicado_exacto; "
+                            "la validación debe enviarlas a cuarentena (comparten ID con su original).")
 
     # 4) Fechas estandarizadas (la columna cruda se conserva)
     df[COL_FECHA_STD], df["fecha_formato_origen"] = estandarizar_fechas(df[cfg["col_fecha"]])
@@ -620,19 +644,19 @@ def limpiar_datos(datos: pd.DataFrame | list[dict], config: str | dict | None = 
     cols_originales = list(crudo.columns)
 
     # 5) Análisis de faltantes (antes de imputar)
-    faltantes = analizar_faltantes(df[cols_originales], cfg)
+    faltantes = analizar_faltantes(df.loc[~es_copia, cols_originales], cfg)
 
     # 6) Reglas de monto (sin modificar): cero / negativo
     segmento = df[seg_col] if seg_col else None
-    df[f"{cm}_original"] = df[cm]
-    df["monto_estado"] = clasificar_montos(df[cm], segmento, seg_cero)
-    n_rev = int(df["monto_estado"].isin(["CERO_REVISAR", "NEGATIVO_REVISAR"]).sum())
+    df["ind_monto_original"] = df[cm]
+    df["ind_monto_estado"] = clasificar_montos(df[cm], segmento, seg_cero)
+    n_rev = int(df["ind_monto_estado"].isin(["CERO_REVISAR", "NEGATIVO_REVISAR"]).sum())
     if n_rev:
         advertencias.append(f"{n_rev} montos cero/negativos fuera de segmentos permitidos requieren regla de negocio; NO se modificaron.")
 
     # 7) Atípicos IQR sobre montos observados (antes de imputar para que las medianas imputadas no sesguen los cuartiles)
-    df["monto_atipico"], limites = detectar_atipicos_iqr(df[cm], segmento, seg_cero, par["factor_iqr"],
-                                                         par["factor_extremo"], par["min_n_segmento"])
+    df["ind_monto_atipico"], limites = detectar_atipicos_iqr(df[cm], segmento, seg_cero, par["factor_iqr"],
+                                                            par["factor_extremo"], par["min_n_segmento"], es_copia)
     for s, lim in limites.items():
         if not lim.get("evaluado"):
             advertencias.append(f"Segmento '{s}' sin IQR ({lim['motivo']}).")
@@ -641,37 +665,37 @@ def limpiar_datos(datos: pd.DataFrame | list[dict], config: str | dict | None = 
     info_imp: dict[str, Any] = {}
     for col in cfg["cols_numericas_imputar"]:
         if col == cm:
-            nuevo, mask, info = imputar_mediana(df[col], segmento, seg_cero, par["umbral_imputacion"], par["min_n_segmento"])
+            nuevo, mask, info = imputar_mediana(df[col], segmento, seg_cero, par["umbral_imputacion"], par["min_n_segmento"], es_copia)
             det = (segmento.map(lambda s: f"mediana de {s}: {info['medianas'].get(str(s), info.get('mediana_global'))}")
                    if info["imputado"] and segmento is not None else "")
         else:
-            nuevo, mask, info = imputar_mediana(df[col], None, set(), par["umbral_imputacion"], par["min_n_segmento"])
+            nuevo, mask, info = imputar_mediana(df[col], None, set(), par["umbral_imputacion"], par["min_n_segmento"], es_copia)
             det = ""
         if mask.any():
             _registrar(auditoria, fuente, df, col_id, mask, col, df[col], nuevo, "IMPUTACION_MEDIANA", det)
         df[col] = nuevo
         if col == cm:
-            df["flag_monto_imputado"] = mask
+            df["ind_monto_imputado"] = mask
         info_imp[col] = info
-    if "flag_monto_imputado" not in df:
-        df["flag_monto_imputado"] = False
+    if "ind_monto_imputado" not in df:
+        df["ind_monto_imputado"] = False
     info_cat = imputar_categoricas(df, cfg, auditoria)
 
     # 9) Winsorización: solo EXTREMOS (más allá de la cerca externa) y solo si aplicar_capping
-    df["flag_monto_winsorizado"] = False
+    df["ind_monto_recortado"] = False
     if par["aplicar_capping"]:
         for s, lim in limites.items():
             if not lim.get("evaluado"):
                 continue
             en_seg = (df[seg_col] == s) if seg_col else pd.Series(True, index=df.index)
-            alto = en_seg & (df["monto_atipico"] == "EXTREMO_ALTO")
-            bajo = en_seg & (df["monto_atipico"] == "EXTREMO_BAJO") & (lim["lim_inf"] > 0)
+            alto = en_seg & (df["ind_monto_atipico"] == "EXTREMO_ALTO")
+            bajo = en_seg & (df["ind_monto_atipico"] == "EXTREMO_BAJO") & (lim["lim_inf"] > 0)
             for mask, tope, nombre in ((alto, round(lim["lim_sup"], 2), "lim_sup"), (bajo, round(lim["lim_inf"], 2), "lim_inf")):
                 if mask.any():
                     _registrar(auditoria, fuente, df, col_id, mask, cm, df[cm], tope, "WINSORIZACION_IQR",
                                f"segmento={s}; {nombre}={tope:,.2f}; factor={par['factor_iqr']}; extremo>{par['factor_extremo']}*IQR")
                     df.loc[mask, cm] = tope
-                    df.loc[mask, "flag_monto_winsorizado"] = True
+                    df.loc[mask, "ind_monto_recortado"] = True
                     prop = mask.sum() / max(en_seg.sum(), 1)
                     if prop > 0.02:
                         advertencias.append(
@@ -680,7 +704,7 @@ def limpiar_datos(datos: pd.DataFrame | list[dict], config: str | dict | None = 
                             "cuarentena usando el monto original (columna *_original) en lugar de confiar en el valor recortado.")
 
     # 10) Perfil final y resumen
-    perfil_fin = perfilar_calidad(df, cfg)
+    perfil_fin = perfilar_calidad(df, cfg, cols_dup=cols_originales)
     df_aud = pd.DataFrame(auditoria, columns=["fuente", "indice_original", "id_registro", "columna", "valor_original",
                                               "valor_nuevo", "regla", "detalle"])
     if seg_col == "currency" and df[seg_col].nunique() > 1:
@@ -690,16 +714,19 @@ def limpiar_datos(datos: pd.DataFrame | list[dict], config: str | dict | None = 
 
     resumen = {
         "fuente": fuente, "filas_entrada": int(len(crudo)), "filas_salida": int(len(df)),
-        "duplicados_exactos_excluidos": int(len(df_dups)),
+        "duplicados_exactos_detectados": int(len(df_dups)),
+        "duplicados_exactos_excluidos": int(len(df_dups)) if par["excluir_duplicados"] else 0,
+        "duplicados_exactos_marcados": 0 if par["excluir_duplicados"] else int(len(df_dups)),
+        "ids_en_conflicto": n_conflictos,
         "reglas_aplicadas": df_aud["regla"].value_counts().to_dict(),
         "formatos_fecha": df["fecha_formato_origen"].value_counts().to_dict(),
         "faltantes": faltantes, "imputacion_numerica": info_imp, "imputacion_categorica": info_cat,
-        "atipicos": limites, "estados_monto": df["monto_estado"].value_counts().to_dict(),
-        "montos_winsorizados": int(df["flag_monto_winsorizado"].sum()),
+        "atipicos": limites, "estados_monto": df["ind_monto_estado"].value_counts().to_dict(),
+        "montos_winsorizados": int(df["ind_monto_recortado"].sum()),
         "parametros": par, "advertencias": advertencias,
         "columnas_nuevas": [c for c in df.columns if c not in cols_originales],
         "perfil_inicial": perfil_ini, "perfil_final": perfil_fin,
-        "auditoria": df_aud, "duplicados_excluidos": df_dups,
+        "auditoria": df_aud, "duplicados_detectados": df_dups, "duplicados_excluidos": df_dups,
     }
     LOG.info("[%s] Limpieza terminada: %d -> %d filas, %d cambios auditados", fuente, len(crudo), len(df), len(df_aud))
     return df, resumen
@@ -731,20 +758,19 @@ def graficar_nulos(resumen: dict, ruta: Path):
 
 
 def graficar_duplicados(resumen: dict, ruta: Path):
-    """Duplicados exactos e IDs repetidos, antes vs. después."""
-    ini, fin = resumen["perfil_inicial"], resumen["perfil_final"]
-    etiquetas = ["Filas duplicadas\nexactas", "IDs repetidos"]
-    antes = [ini["duplicados_exactos"], ini["ids_repetidos"]]
-    despues = [fin["duplicados_exactos"], fin["ids_repetidos"]]
-    x = np.arange(2)
+    """Estado de los duplicados exactos: sin identificar (antes) vs. marcados / excluidos (después)."""
+    n = resumen["duplicados_exactos_detectados"]
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
-    b1 = ax.bar(x - 0.2, antes, 0.4, label="Antes", color="#c0392b")
-    b2 = ax.bar(x + 0.2, despues, 0.4, label="Después", color="#27ae60")
-    ax.bar_label(b1)
-    ax.bar_label(b2)
-    ax.set_xticks(x, etiquetas)
-    ax.set_ylabel("Registros")
-    ax.set_title(f"Duplicados: {resumen['fuente']}\n(excluidos a tabla de evidencia: {resumen['duplicados_exactos_excluidos']})")
+    ax.bar(["Antes"], [n], color="#c0392b", label="Sin identificar")
+    ax.bar(["Después"], [resumen["duplicados_exactos_marcados"]], color="#e67e22",
+           label="Marcados (ind_duplicado_exacto)")
+    ax.bar(["Después"], [resumen["duplicados_exactos_excluidos"]], bottom=[resumen["duplicados_exactos_marcados"]],
+           color="#27ae60", label="Excluidos del flujo")
+    for x, v in (("Antes", n), ("Después", n)):
+        ax.text(x, v + max(n, 1) * 0.02, str(v), ha="center")
+    ax.set_ylabel("Filas duplicadas exactas")
+    ax.set_ylim(0, max(n, 1) * 1.2)
+    ax.set_title(f"Duplicados exactos: {resumen['fuente']}\n(IDs con contenido distinto: {resumen['ids_en_conflicto']})")
     ax.legend()
     fig.tight_layout()
     fig.savefig(ruta, dpi=130)
@@ -817,8 +843,10 @@ def generar_reporte_md(resumen: dict, prefijo: str, ruta: Path):
              ["Filas", ini["n_filas"], fin["n_filas"]],
              ["Columnas", ini["n_columnas"], f"{fin['n_columnas']} (+{len(resumen['columnas_nuevas'])} derivadas de auditoría)"],
              ["Celdas nulas (columnas originales)", ini["n_nulos_total"], nulos_fin],
-             ["Filas duplicadas exactas", ini["duplicados_exactos"], fin["duplicados_exactos"]],
-             ["IDs repetidos", ini["ids_repetidos"], fin["ids_repetidos"]],
+             ["Filas duplicadas exactas", ini["duplicados_exactos"],
+              f"{resumen['duplicados_exactos_marcados']} marcadas con ind_duplicado_exacto; "
+              f"{resumen['duplicados_exactos_excluidos']} excluidas"],
+             ["IDs con contenido distinto (conflicto)", 0, resumen["ids_en_conflicto"]],
              ["Montos winsorizados", 0, resumen["montos_winsorizados"]]],
              columns=["Métrica", "Antes", "Después"])), "",
          "## 2. Perfil inicial", "", "### Columnas, tipos y nulos", "", _tabla_md(ini["columnas"]), "",
@@ -836,7 +864,7 @@ def generar_reporte_md(resumen: dict, prefijo: str, ruta: Path):
     L += ["## 4. Transformaciones aplicadas", "",
           _tabla_md(pd.DataFrame(list(resumen["reglas_aplicadas"].items()), columns=["Regla", "Celdas/filas afectadas"])), "",
           "Detalle celda a celda (valor original -> valor nuevo): `*_auditoria_cambios.csv`. "
-          "Filas duplicadas retiradas: `*_duplicados_excluidos.csv`.", "",
+          "Copias exactas detectadas (evidencia): `*_duplicados_detectados.csv`.", "",
           "### Imputación", ""]
     for col, i in resumen["imputacion_numerica"].items():
         L.append(f"- `{col}`: {i['n_faltantes']} faltantes ({i['pct_faltante']} % de la población aplicable); "
@@ -844,7 +872,7 @@ def generar_reporte_md(resumen: dict, prefijo: str, ruta: Path):
     for col, i in resumen["imputacion_categorica"].items():
         L.append(f"- `{col}`: {i['n_imputados']} nulos -> etiqueta `{i['etiqueta']}`")
     L += ["", "### Estados de monto (sin modificar)", "",
-          _tabla_md(pd.DataFrame(list(resumen["estados_monto"].items()), columns=["monto_estado", "n"])), "",
+          _tabla_md(pd.DataFrame(list(resumen["estados_monto"].items()), columns=["ind_monto_estado", "n"])), "",
           "### Formatos de fecha detectados", "",
           _tabla_md(pd.DataFrame(list(resumen["formatos_fecha"].items()), columns=["Formato origen", "n"])), "",
           "## 5. Valores atípicos (IQR × 1.5)", "",
@@ -890,13 +918,13 @@ def procesar_fuente(ruta_entrada: str | Path, config: str, dir_salida: Path) -> 
     cfg = _resolver_config(crudo, config)
     p = cfg["nombre"]
     df.to_csv(dir_salida / f"{p}_limpio.csv", index_label="indice_original", encoding="utf-8")
-    resumen["duplicados_excluidos"].to_csv(dir_salida / f"{p}_duplicados_excluidos.csv", index_label="indice_original", encoding="utf-8")
+    resumen["duplicados_detectados"].to_csv(dir_salida / f"{p}_duplicados_detectados.csv", index_label="indice_original", encoding="utf-8")
     resumen["auditoria"].to_csv(dir_salida / f"{p}_auditoria_cambios.csv", index=False, encoding="utf-8")
     graficar_nulos(resumen, dir_salida / f"{p}_grafica_nulos.png")
     graficar_duplicados(resumen, dir_salida / f"{p}_grafica_duplicados.png")
     graficar_atipicos(crudo, df, cfg, resumen, dir_salida / f"{p}_grafica_atipicos.png")
     generar_reporte_md(resumen, p, dir_salida / f"reporte_calidad_{p}.md")
-    ligero = {k: v for k, v in resumen.items() if k not in ("auditoria", "duplicados_excluidos")}
+    ligero = {k: v for k, v in resumen.items() if k not in ("auditoria", "duplicados_excluidos", "duplicados_detectados")}
     (dir_salida / f"{p}_resumen.json").write_text(json.dumps(ligero, ensure_ascii=False, indent=2, default=_json_default),
                                                   encoding="utf-8")
     return resumen
@@ -913,8 +941,8 @@ def main(argv: list[str] | None = None) -> int:
     for ruta, cfg in ((args.atm, "atm"), (args.digitales, "transferencias_digitales")):
         try:
             r = procesar_fuente(ruta, cfg, Path(args.salida))
-            print(f"[OK] {cfg}: {r['filas_entrada']} -> {r['filas_salida']} filas | duplicados excluidos: "
-                  f"{r['duplicados_exactos_excluidos']} | cambios auditados: {len(r['auditoria'])}")
+            print(f"[OK] {cfg}: {r['filas_entrada']} -> {r['filas_salida']} filas | duplicados exactos: "
+                  f"{r['duplicados_exactos_detectados']} detectados, {r['duplicados_exactos_excluidos']} excluidos | cambios auditados: {len(r['auditoria'])}")
         except (ErrorCargaDatos, ErrorConfiguracion, ValueError) as exc:
             errores += 1
             LOG.error("[%s] %s", cfg, exc)
