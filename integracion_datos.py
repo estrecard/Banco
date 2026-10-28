@@ -686,7 +686,37 @@ def _construir_reporte(df: pd.DataFrame, catalogo: Optional[CatalogoCuentas], n_
     return rep
 
 def verificar_trazabilidad(integrado: pd.DataFrame, atm_origen: pd.DataFrame, digital_origen: pd.DataFrame) -> dict:
-    return {"filas_integradas": len(integrado), "id_registro_unico": True, "discrepancias": 0, "ok": True}
+    """Comprueba cobertura e identidad por posición, sin exponer valores crudos.
+
+    Las fuentes deben corresponder a los DataFrames que entraron a integración.
+    Esta comprobación no certifica importes ni reemplaza la auditoría cruda.
+    """
+    esperados = {
+        (fuente, i): _texto(r.get(col_id))
+        for fuente, datos, col_id in (
+            (FUENTE_ATM, atm_origen, "id_transaccion"),
+            (FUENTE_DIGITAL, digital_origen, "transfer_id"),
+        )
+        for i, r in enumerate(datos.to_dict("records"))
+    }
+    columnas = {"fuente", "fila_origen", "id_original", "id_registro"}
+    if not columnas.issubset(integrado.columns):
+        return {"filas_integradas": len(integrado), "id_registro_unico": False,
+                "discrepancias": max(1, len(esperados)), "ok": False}
+    vistos, discrepancias = set(), 0
+    for r in integrado.to_dict("records"):
+        fila = r["fila_origen"]
+        if isinstance(fila, bool) or not isinstance(fila, (int, np.integer)):
+            discrepancias += 1
+            continue
+        clave = (r["fuente"], int(fila))
+        if clave in vistos or clave not in esperados or _texto(r["id_original"]) != esperados.get(clave):
+            discrepancias += 1
+        vistos.add(clave)
+    discrepancias += len(set(esperados) - vistos)
+    unico = bool(integrado["id_registro"].notna().all() and integrado["id_registro"].is_unique)
+    return {"filas_integradas": len(integrado), "id_registro_unico": unico,
+            "discrepancias": discrepancias, "ok": discrepancias == 0 and unico}
 
 def integrar_datos(atm: Union[str, Path, pd.DataFrame],
                    transferencias: Union[str, Path, pd.DataFrame, list],

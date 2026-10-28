@@ -1,0 +1,30 @@
+{
+  "filas_atm": 620,
+  "filas_digitales": 600,
+  "leidos": 1220,
+  "validos": 1053,
+  "rechazados": 167,
+  "trazabilidad_comprobada": true,
+  "catalogo": "catalogo_cuentas.csv",
+  "hashes_sha256": {
+    "ATM_CSV": "0a7f1bc64c30d39f2653651a0e6b82e66804e6b85eceb4912a80d88dc4c87ef8",
+    "TRANSFERENCIAS_JSON": "614040b5d6b7a8dfd9e1ba87c157b86f6b9ce1b05bfedf682cb5d512ea1d0852"
+  },
+  "motivos_por_campo": {
+    "CLABE_INVALIDA": 46,
+    "CUENTA_HUERFANA": 61,
+    "DUPLICADO_EXACTO": 20,
+    "MONTO_IMPUTADO": 27,
+    "MONTO_RECORTADO": 19
+  },
+  "por_fuente": {
+    "ATM_CSV": {
+      "validos": 540,
+      "rechazados": 80
+    },
+    "TRANSFERENCIAS_JSON": {
+      "validos": 513,
+      "rechazados": 87
+    }
+  }
+}

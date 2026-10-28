@@ -2,3 +2,5 @@ pandas
 numpy
 matplotlib
 scipy
+pydantic>=2,<3
+pytest>=8,<10

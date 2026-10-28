@@ -218,3 +218,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Evidencia bancaria generada por la demostración del integrante 3
+reports/validacion/validos.json
+reports/validacion/rechazados.json

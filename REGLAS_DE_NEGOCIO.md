@@ -49,3 +49,25 @@ No valida CLABE, formato de correo, existencia de cuentas ni estatus permitidos 
 * Los 18 extremos del JSON son el 3 % de los registros: parece un error sistemático de escala o captura, no ruido. Se recomienda enviarlos a cuarentena usando el monto original.
 * Un monto imputado no debe usarse para conciliar saldos; por eso queda marcado.
 
+## Parte 3: Validación y cuarentena (políticas académicas de esta implementación)
+
+Estas decisiones se adoptan para el módulo 3; no representan límites bancarios universales ni acuerdos anteriores del equipo.
+
+| Situación | Regla |
+|---|---|
+| Identidad | Identificadores de texto no vacíos, fuente conocida, posición entera no negativa; cuenta interna CTA seguida de cuatro dígitos según el esquema integrado. |
+| Importe | Decimal finito, máximo dos decimales en MXN/comisión; no aceptar booleanos como dinero. No imponer máximo monetario por IQR. |
+| Cero/negativo | Cero aceptado para CONSULTA_SALDO. Cero en operaciones monetarias y negativos se rechazan mientras no exista una convención de reversos. |
+| Imputación/capping | `ind_monto_imputado` o `ind_monto_recortado` verdaderos implican cuarentena: un importe analítico no demuestra el importe transaccional real. Se conserva el original. |
+| Comisión | ATM requiere comisión explícita no negativa; cero es válido. Ausencia digital significa no aplicable. |
+| Fecha | Fecha ISO real con hora y zona; la interpretación de fuente y supuesto UTC-6 pertenecen a integración. |
+| Moneda | MXN/USD de origen; tipo de cambio académico 1/19.50. No reconvertir importes en validación. |
+| Cuenta | Cuenta no catalogada implica cuarentena. Catálogo no verificado tiene causa distinta. El estado actual bloqueado/suspendido no demuestra invalidez histórica. |
+| CLABE | En transferencias exigir texto de 18 dígitos ASCII, conservando ceros iniciales. No exigir checksum ni afirmar existencia/titularidad. |
+| Estado | COMPLETADA, FALLIDA, PENDIENTE, RECHAZADA y DEVUELTA son estados de datos válidos. |
+| Duplicado | Copias exactas secundarias marcadas se rechazan; conservar original y copia auditables. Reintentos/conflictos marcados como alerta no se borran automáticamente. |
+| Indicadores | Consumir errores de integración y marcas de limpieza. Código de error desconocido implica incompatibilidad visible del contrato. Correo/cajero ausente siguen siendo alertas. |
+| Auditoría | Conservar crudo antes de limpiar y el registro integrado por separado; ningún valor sensible se interpola en los mensajes de error. |
+
+Detalles y ejecución en README_VALIDACION.md. El contrato de salida para SQLite conserva fecha ISO y dinero exacto; no supone implementada la persistencia.
+
