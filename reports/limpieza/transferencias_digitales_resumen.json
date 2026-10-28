@@ -2,7 +2,10 @@
   "fuente": "transferencias_digitales",
   "filas_entrada": 600,
   "filas_salida": 600,
+  "duplicados_exactos_detectados": 0,
   "duplicados_exactos_excluidos": 0,
+  "duplicados_exactos_marcados": 0,
+  "ids_en_conflicto": 0,
   "reglas_aplicadas": {
     "NORMALIZAR_MAYUSCULAS": 121,
     "WINSORIZACION_IQR": 18,
@@ -123,7 +126,8 @@
     "factor_extremo": 3.0,
     "min_n_segmento": 8,
     "umbral_imputacion": 0.1,
-    "aplicar_capping": true
+    "aplicar_capping": true,
+    "excluir_duplicados": false
   },
   "advertencias": [
     "Segmento 'MXN': 15 extremos (3.2% de los registros). Una proporción así sugiere un error sistemático (escala/unidad/captura) y no ruido aleatorio: conviene enviarlos a revisión o cuarentena usando el monto original (columna *_original) en lugar de confiar en el valor recortado.",
@@ -132,15 +136,16 @@
     "Fechas sin zona horaria se asumieron en UTC-06:00 (confirmar con el equipo)."
   ],
   "columnas_nuevas": [
-    "flag_id_repetido",
+    "ind_duplicado_exacto",
+    "ind_id_repetido",
     "fecha_hora_std",
     "fecha_formato_origen",
-    "amount_original",
-    "monto_estado",
-    "monto_atipico",
-    "flag_monto_imputado",
-    "flag_notification_email_imputado",
-    "flag_monto_winsorizado"
+    "ind_monto_original",
+    "ind_monto_estado",
+    "ind_monto_atipico",
+    "ind_monto_imputado",
+    "ind_notification_email_imputado",
+    "ind_monto_recortado"
   ],
   "perfil_inicial": {
     "n_filas": 600,
@@ -148,12 +153,12 @@
     "columnas": [
       {
         "columna": "transfer_id",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 600,
-        "ejemplos_frecuentes": "SPEI-2026-00001(1); SPEI-2026-00002(1); SPEI-2026-00003(1)"
+        "ejemplos_frecuentes": "SPEI-2026-00001(1); SPEI-2026-00395(1); SPEI-2026-00397(1)"
       },
       {
         "columna": "timestamp",
@@ -162,16 +167,16 @@
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 598,
-        "ejemplos_frecuentes": "2026-09-16T19:59:00-06:00(2); 2026-09-15T08:39:00-06:00(2); 2026-09-12T19:49:00-"
+        "ejemplos_frecuentes": "2026-09-15T08:39:00-06:00(2); 2026-09-16T19:59:00-06:00(2); 1789866960(1)"
       },
       {
         "columna": "account_id",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 79,
-        "ejemplos_frecuentes": "CTA-0010(16); CTA-0042(16); CTA-0040(16)"
+        "ejemplos_frecuentes": "CTA-0042(16); CTA-0040(16); CTA-0010(16)"
       },
       {
         "columna": "amount",
@@ -180,11 +185,11 @@
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 600,
-        "ejemplos_frecuentes": "19844.18(1); 33048.19(1); 28312.37(1)"
+        "ejemplos_frecuentes": "19844.18(1); 20801.3(1); 17098.54(1)"
       },
       {
         "columna": "currency",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -193,16 +198,16 @@
       },
       {
         "columna": "beneficiary_clabe",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 555,
-        "ejemplos_frecuentes": "12345(46); 012210100614023846(1); 012851851854195836(1)"
+        "ejemplos_frecuentes": "12345(46); 012210100614023846(1); 012238560411480029(1)"
       },
       {
         "columna": "notification_email",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:592",
         "n_nulos": 8,
         "pct_nulos": 1.33,
@@ -211,7 +216,7 @@
       },
       {
         "columna": "concept",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -220,7 +225,7 @@
       },
       {
         "columna": "status",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -229,7 +234,7 @@
       },
       {
         "columna": "platform",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -287,16 +292,16 @@
   },
   "perfil_final": {
     "n_filas": 600,
-    "n_columnas": 19,
+    "n_columnas": 20,
     "columnas": [
       {
         "columna": "transfer_id",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 600,
-        "ejemplos_frecuentes": "SPEI-2026-00001(1); SPEI-2026-00002(1); SPEI-2026-00003(1)"
+        "ejemplos_frecuentes": "SPEI-2026-00001(1); SPEI-2026-00395(1); SPEI-2026-00397(1)"
       },
       {
         "columna": "timestamp",
@@ -305,16 +310,16 @@
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 598,
-        "ejemplos_frecuentes": "2026-09-16T19:59:00-06:00(2); 2026-09-15T08:39:00-06:00(2); 2026-09-12T19:49:00-"
+        "ejemplos_frecuentes": "2026-09-15T08:39:00-06:00(2); 2026-09-16T19:59:00-06:00(2); 1789866960(1)"
       },
       {
         "columna": "account_id",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 79,
-        "ejemplos_frecuentes": "CTA-0010(16); CTA-0042(16); CTA-0040(16)"
+        "ejemplos_frecuentes": "CTA-0042(16); CTA-0040(16); CTA-0010(16)"
       },
       {
         "columna": "amount",
@@ -327,7 +332,7 @@
       },
       {
         "columna": "currency",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -336,16 +341,16 @@
       },
       {
         "columna": "beneficiary_clabe",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 555,
-        "ejemplos_frecuentes": "12345(46); 012210100614023846(1); 012851851854195836(1)"
+        "ejemplos_frecuentes": "12345(46); 012210100614023846(1); 012238560411480029(1)"
       },
       {
         "columna": "notification_email",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -354,7 +359,7 @@
       },
       {
         "columna": "concept",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -363,7 +368,7 @@
       },
       {
         "columna": "status",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -372,7 +377,7 @@
       },
       {
         "columna": "platform",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -380,7 +385,16 @@
         "ejemplos_frecuentes": "API Empresarial(166); Web Banking(150); App Android(145)"
       },
       {
-        "columna": "flag_id_repetido",
+        "columna": "ind_duplicado_exacto",
+        "dtype_pandas": "bool",
+        "tipos_python": "bool:600",
+        "n_nulos": 0,
+        "pct_nulos": 0.0,
+        "n_unicos": 1,
+        "ejemplos_frecuentes": "False(600)"
+      },
+      {
+        "columna": "ind_id_repetido",
         "dtype_pandas": "bool",
         "tipos_python": "bool:600",
         "n_nulos": 0,
@@ -390,16 +404,16 @@
       },
       {
         "columna": "fecha_hora_std",
-        "dtype_pandas": "datetime64[us, UTC-06:00]",
+        "dtype_pandas": "datetime64[ns, UTC-06:00]",
         "tipos_python": "Timestamp:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 594,
-        "ejemplos_frecuentes": "2026-10-14 23:04:00-06:00(2); 2026-09-16 19:59:00-06:00(2); 2026-09-15 08:39:00-"
+        "ejemplos_frecuentes": "2026-09-19 07:28:00-06:00(2); 2026-10-14 23:04:00-06:00(2); 2026-09-03 17:47:00-"
       },
       {
         "columna": "fecha_formato_origen",
-        "dtype_pandas": "str",
+        "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
@@ -407,16 +421,16 @@
         "ejemplos_frecuentes": "ISO8601 con offset(405); EPOCH segundos(195)"
       },
       {
-        "columna": "amount_original",
+        "columna": "ind_monto_original",
         "dtype_pandas": "float64",
         "tipos_python": "float:600",
         "n_nulos": 0,
         "pct_nulos": 0.0,
         "n_unicos": 600,
-        "ejemplos_frecuentes": "19844.18(1); 33048.19(1); 28312.37(1)"
+        "ejemplos_frecuentes": "19844.18(1); 20801.3(1); 17098.54(1)"
       },
       {
-        "columna": "monto_estado",
+        "columna": "ind_monto_estado",
         "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
@@ -425,7 +439,7 @@
         "ejemplos_frecuentes": "POSITIVO(600)"
       },
       {
-        "columna": "monto_atipico",
+        "columna": "ind_monto_atipico",
         "dtype_pandas": "object",
         "tipos_python": "str:600",
         "n_nulos": 0,
@@ -434,7 +448,7 @@
         "ejemplos_frecuentes": "NO(582); EXTREMO_ALTO(18)"
       },
       {
-        "columna": "flag_monto_imputado",
+        "columna": "ind_monto_imputado",
         "dtype_pandas": "bool",
         "tipos_python": "bool:600",
         "n_nulos": 0,
@@ -443,7 +457,7 @@
         "ejemplos_frecuentes": "False(600)"
       },
       {
-        "columna": "flag_notification_email_imputado",
+        "columna": "ind_notification_email_imputado",
         "dtype_pandas": "bool",
         "tipos_python": "bool:600",
         "n_nulos": 0,
@@ -452,7 +466,7 @@
         "ejemplos_frecuentes": "False(584); True(16)"
       },
       {
-        "columna": "flag_monto_winsorizado",
+        "columna": "ind_monto_recortado",
         "dtype_pandas": "bool",
         "tipos_python": "bool:600",
         "n_nulos": 0,

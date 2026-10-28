@@ -84,26 +84,26 @@ atm,600,ATM-TX-00455,resultado,exitosa,EXITOSA,NORMALIZAR_MAYUSCULAS,
 atm,602,ATM-TX-00403,resultado,exitosa,EXITOSA,NORMALIZAR_MAYUSCULAS,
 atm,605,ATM-TX-00058,resultado,exitosa,EXITOSA,NORMALIZAR_MAYUSCULAS,
 atm,619,ATM-TX-00068,resultado,exitosa,EXITOSA,NORMALIZAR_MAYUSCULAS,
-atm,600,ATM-TX-00455,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 454
-atm,601,ATM-TX-00342,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 341
-atm,602,ATM-TX-00403,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 402
-atm,603,ATM-TX-00321,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 320
-atm,604,ATM-TX-00138,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 137
-atm,605,ATM-TX-00058,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 57
-atm,606,ATM-TX-00121,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 120
-atm,607,ATM-TX-00147,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 146
-atm,608,ATM-TX-00249,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 248
-atm,609,ATM-TX-00509,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 508
-atm,610,ATM-TX-00412,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 411
-atm,611,ATM-TX-00203,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 202
-atm,612,ATM-TX-00078,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 77
-atm,613,ATM-TX-00493,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 492
-atm,614,ATM-TX-00471,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 470
-atm,615,ATM-TX-00317,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 316
-atm,616,ATM-TX-00381,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 380
-atm,617,ATM-TX-00285,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 284
-atm,618,ATM-TX-00164,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 163
-atm,619,ATM-TX-00068,*,fila completa,excluida del flujo principal,DUPLICADO_EXACTO_EXCLUIDO,idéntica a la fila 67
+atm,600,ATM-TX-00455,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 454
+atm,601,ATM-TX-00342,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 341
+atm,602,ATM-TX-00403,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 402
+atm,603,ATM-TX-00321,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 320
+atm,604,ATM-TX-00138,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 137
+atm,605,ATM-TX-00058,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 57
+atm,606,ATM-TX-00121,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 120
+atm,607,ATM-TX-00147,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 146
+atm,608,ATM-TX-00249,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 248
+atm,609,ATM-TX-00509,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 508
+atm,610,ATM-TX-00412,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 411
+atm,611,ATM-TX-00203,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 202
+atm,612,ATM-TX-00078,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 77
+atm,613,ATM-TX-00493,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 492
+atm,614,ATM-TX-00471,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 470
+atm,615,ATM-TX-00317,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 316
+atm,616,ATM-TX-00381,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 380
+atm,617,ATM-TX-00285,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 284
+atm,618,ATM-TX-00164,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 163
+atm,619,ATM-TX-00068,*,fila completa,se conserva; ind_duplicado_exacto = True,DUPLICADO_EXACTO_MARCADO,idéntica a la fila 67
 atm,33,ATM-TX-00034,monto_mxn,,4000.0,IMPUTACION_MEDIANA,mediana de PAGO_SERVICIOS: 4000.0
 atm,39,ATM-TX-00040,monto_mxn,,4000.0,IMPUTACION_MEDIANA,mediana de PAGO_SERVICIOS: 4000.0
 atm,73,ATM-TX-00074,monto_mxn,,2000.0,IMPUTACION_MEDIANA,mediana de RETIRO: 2000.0
@@ -173,4 +173,6 @@ atm,560,ATM-TX-00561,id_cajero,,CAJERO_NO_REGISTRADO,NULO_A_ETIQUETA_CONTROLADA,
 atm,561,ATM-TX-00562,id_cajero,,CAJERO_NO_REGISTRADO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=CAJERO_NO_REGISTRADO
 atm,562,ATM-TX-00563,id_cajero,,CAJERO_NO_REGISTRADO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=CAJERO_NO_REGISTRADO
 atm,565,ATM-TX-00566,id_cajero,,CAJERO_NO_REGISTRADO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=CAJERO_NO_REGISTRADO
+atm,600,ATM-TX-00455,id_cajero,,CAJERO_NO_REGISTRADO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=CAJERO_NO_REGISTRADO
+atm,603,ATM-TX-00321,id_cajero,,CAJERO_NO_REGISTRADO,NULO_A_ETIQUETA_CONTROLADA,etiqueta=CAJERO_NO_REGISTRADO
 atm,415,ATM-TX-00416,monto_mxn,3500000.0,11750.0,WINSORIZACION_IQR,"segmento=RETIRO; lim_sup=11,750.00; factor=1.5; extremo>3.0*IQR"

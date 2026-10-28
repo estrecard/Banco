@@ -1,16 +1,16 @@
 # Reporte de calidad: atm
 
-Generado: 2026-10-23 23:44  |  Módulo: `limpieza_datos.py`
+Generado: 2026-10-27 09:35  |  Módulo: `limpieza_datos.py`
 
 ## 1. Resumen antes / después
 
 | Métrica | Antes | Después |
 | --- | --- | --- |
-| Filas | 620 | 600 |
-| Columnas | 8 | 17 (+9 derivadas de auditoría) |
+| Filas | 620 | 620 |
+| Columnas | 8 | 18 (+10 derivadas de auditoría) |
 | Celdas nulas (columnas originales) | 71 | 0 |
-| Filas duplicadas exactas | 20 | 0 |
-| IDs repetidos | 20 | 0 |
+| Filas duplicadas exactas | 20 | 20 marcadas con ind_duplicado_exacto; 0 excluidas |
+| IDs con contenido distinto (conflicto) | 0 | 0 |
 | Montos winsorizados | 0 | 1 |
 
 ## 2. Perfil inicial
@@ -19,13 +19,13 @@ Generado: 2026-10-23 23:44  |  Módulo: `limpieza_datos.py`
 
 | columna | dtype_pandas | tipos_python | n_nulos | pct_nulos | n_unicos | ejemplos_frecuentes |
 | --- | --- | --- | --- | --- | --- | --- |
-| id_transaccion | str | str:620 | 0 | 0.00 | 600 | ATM-TX-00058(2); ATM-TX-00068(2); ATM-TX-00078(2) |
-| fecha_hora | str | str:620 | 0 | 0.00 | 600 | 2026/09/12 09:40:00(2); 2026/09/18 11:30:00(2); 07/10/2026 14:00(2) |
-| id_cuenta | str | str:620 | 0 | 0.00 | 82 | CTA-0012(19); CTA-0011(18); CTA-0004(18) |
-| tipo_operacion | str | str:620 | 0 | 0.00 | 4 | RETIRO(270); DEPOSITO(133); PAGO_SERVICIOS(116) |
+| id_transaccion | object | str:620 | 0 | 0.00 | 600 | ATM-TX-00455(2); ATM-TX-00285(2); ATM-TX-00381(2) |
+| fecha_hora | object | str:620 | 0 | 0.00 | 600 | 04/09/2026 22:48(2); 16/10/2026 18:08(2); 2026/09/06 19:52:00(2) |
+| id_cuenta | object | str:620 | 0 | 0.00 | 82 | CTA-0012(19); CTA-0047(18); CTA-0011(18) |
+| tipo_operacion | object | str:620 | 0 | 0.00 | 4 | RETIRO(270); DEPOSITO(133); PAGO_SERVICIOS(116) |
 | monto_mxn | float64 | float:593 | 27 | 4.35 | 14 | 0.0(101); 500.0(87); 12000.0(49) |
-| id_cajero | str | str:576 | 44 | 7.10 | 5 | ATM-COL-01(126); ATM-MZL-01(124); ATM-TECO-01(113) |
-| resultado | str | str:620 | 0 | 0.00 | 4 | EXITOSA(308); FALLO_CONEXION(120); FALLO_FONDOS(107) |
+| id_cajero | object | str:576 | 44 | 7.10 | 5 | ATM-COL-01(126); ATM-MZL-01(124); ATM-TECO-01(113) |
+| resultado | object | str:620 | 0 | 0.00 | 4 | EXITOSA(308); FALLO_CONEXION(120); FALLO_FONDOS(107) |
 | comision_aplicada | float64 | float:620 | 0 | 0.00 | 4 | 0.0(171); 15.0(159); 34.8(155) |
 
 ### Inconsistencias detectadas
@@ -35,7 +35,7 @@ Generado: 2026-10-23 23:44  |  Módulo: `limpieza_datos.py`
 | resultado | MAYUSCULAS_MEZCLADAS | 85 | {'EXITOSA': 308, 'exitosa': 85} |
 | fecha_hora | FORMATOS_FECHA_MEZCLADOS | 400 | d/d/d d:d:d=220; d/d/d d:d=200; d-d-d d:d:d=200 |
 | id_cuenta | FUERA_DE_PATRON_ESPERADO | 32 | patrón ^CTA-00\d{2}$; ejemplos: ['CTA-8997', 'CTA-8207', 'CTA-9193'] |
-| monto_mxn | MONTO_CERO | 101 | puede ser legítimo (p. ej. consulta de saldo); ver monto_estado |
+| monto_mxn | MONTO_CERO | 101 | puede ser legítimo (p. ej. consulta de saldo); ver ind_monto_estado |
 
 ## 3. Valores faltantes: ¿MCAR o MAR?
 
@@ -70,33 +70,33 @@ _Umbral Bonferroni: p < 0.0125_
 | Regla | Celdas/filas afectadas |
 | --- | --- |
 | NORMALIZAR_MAYUSCULAS | 85 |
-| NULO_A_ETIQUETA_CONTROLADA | 42 |
+| NULO_A_ETIQUETA_CONTROLADA | 44 |
 | IMPUTACION_MEDIANA | 27 |
-| DUPLICADO_EXACTO_EXCLUIDO | 20 |
+| DUPLICADO_EXACTO_MARCADO | 20 |
 | WINSORIZACION_IQR | 1 |
 
-Detalle celda a celda (valor original -> valor nuevo): `*_auditoria_cambios.csv`. Filas duplicadas retiradas: `*_duplicados_excluidos.csv`.
+Detalle celda a celda (valor original -> valor nuevo): `*_auditoria_cambios.csv`. Copias exactas detectadas (evidencia): `*_duplicados_detectados.csv`.
 
 ### Imputación
 
-- `monto_mxn`: 27 faltantes (5.37 % de la población aplicable); imputado con mediana por segmento {"DEPOSITO": 4000.0, "PAGO_SERVICIOS": 4000.0, "RETIRO": 2000.0}
-- `id_cajero`: 42 nulos -> etiqueta `CAJERO_NO_REGISTRADO`
+- `monto_mxn`: 27 faltantes (5.2 % de la población aplicable); imputado con mediana por segmento {"DEPOSITO": 4000.0, "PAGO_SERVICIOS": 4000.0, "RETIRO": 2000.0}
+- `id_cajero`: 44 nulos -> etiqueta `CAJERO_NO_REGISTRADO`
 
 ### Estados de monto (sin modificar)
 
-| monto_estado | n |
+| ind_monto_estado | n |
 | --- | --- |
-| POSITIVO | 476 |
-| CERO_ESPERADO | 97 |
+| POSITIVO | 492 |
+| CERO_ESPERADO | 101 |
 | FALTANTE | 27 |
 
 ### Formatos de fecha detectados
 
 | Formato origen | n |
 | --- | --- |
-| YYYY/MM/DD HH:MM:SS (sin zona) | 211 |
-| YYYY-MM-DD HH:MM:SS (sin zona) | 196 |
-| DD/MM/YYYY HH:MM (sin zona) | 193 |
+| YYYY/MM/DD HH:MM:SS (sin zona) | 220 |
+| DD/MM/YYYY HH:MM (sin zona) | 200 |
+| YYYY-MM-DD HH:MM:SS (sin zona) | 200 |
 
 ## 5. Valores atípicos (IQR × 1.5)
 
@@ -112,23 +112,24 @@ Se calcula por segmento sobre montos observados > 0. **Leve** = fuera de Q±1.5�
 
 | columna | dtype_pandas | tipos_python | n_nulos | pct_nulos | n_unicos | ejemplos_frecuentes |
 | --- | --- | --- | --- | --- | --- | --- |
-| id_transaccion | str | str:600 | 0 | 0.00 | 600 | ATM-TX-00001(1); ATM-TX-00002(1); ATM-TX-00003(1) |
-| fecha_hora | str | str:600 | 0 | 0.00 | 600 | 2026/09/15 08:45:00(1); 12/09/2026 13:26(1); 2026/09/28 11:15:00(1) |
-| id_cuenta | str | str:600 | 0 | 0.00 | 82 | CTA-0012(19); CTA-0004(18); CTA-0011(17) |
-| tipo_operacion | str | str:600 | 0 | 0.00 | 4 | RETIRO(262); DEPOSITO(127); PAGO_SERVICIOS(114) |
-| monto_mxn | float64 | float:600 | 0 | 0.00 | 14 | 0.0(97); 500.0(84); 4000.0(57) |
-| id_cajero | str | str:600 | 0 | 0.00 | 6 | ATM-COL-01(121); ATM-MZL-01(121); ATM-TECO-01(110) |
-| resultado | str | str:600 | 0 | 0.00 | 3 | EXITOSA(379); FALLO_CONEXION(117); FALLO_FONDOS(104) |
-| comision_aplicada | float64 | float:600 | 0 | 0.00 | 4 | 0.0(164); 15.0(153); 34.8(152) |
-| flag_id_repetido | bool | bool:600 | 0 | 0.00 | 1 | False(600) |
-| fecha_hora_std | datetime64[us, UTC-06:00] | Timestamp:600 | 0 | 0.00 | 598 | 2026-09-06 10:59:00-06:00(2); 2026-09-23 23:41:00-06:00(2); 2026-09-15 08:45:00- |
-| fecha_formato_origen | str | str:600 | 0 | 0.00 | 3 | YYYY/MM/DD HH:MM:SS (sin zona)(211); YYYY-MM-DD HH:MM:SS (sin zona)(196); DD/MM/ |
-| monto_mxn_original | float64 | float:573 | 27 | 4.50 | 14 | 0.0(97); 500.0(84); 12000.0(48) |
-| monto_estado | object | str:600 | 0 | 0.00 | 3 | POSITIVO(476); CERO_ESPERADO(97); FALTANTE(27) |
-| monto_atipico | object | str:600 | 0 | 0.00 | 3 | NO(475); NO_EVALUADO(124); EXTREMO_ALTO(1) |
-| flag_monto_imputado | bool | bool:600 | 0 | 0.00 | 2 | False(573); True(27) |
-| flag_id_cajero_imputado | bool | bool:600 | 0 | 0.00 | 2 | False(558); True(42) |
-| flag_monto_winsorizado | bool | bool:600 | 0 | 0.00 | 2 | False(599); True(1) |
+| id_transaccion | object | str:620 | 0 | 0.00 | 600 | ATM-TX-00455(2); ATM-TX-00285(2); ATM-TX-00381(2) |
+| fecha_hora | object | str:620 | 0 | 0.00 | 600 | 04/09/2026 22:48(2); 16/10/2026 18:08(2); 2026/09/06 19:52:00(2) |
+| id_cuenta | object | str:620 | 0 | 0.00 | 82 | CTA-0012(19); CTA-0047(18); CTA-0011(18) |
+| tipo_operacion | object | str:620 | 0 | 0.00 | 4 | RETIRO(270); DEPOSITO(133); PAGO_SERVICIOS(116) |
+| monto_mxn | float64 | float:620 | 0 | 0.00 | 14 | 0.0(101); 500.0(87); 4000.0(58) |
+| id_cajero | object | str:620 | 0 | 0.00 | 6 | ATM-COL-01(126); ATM-MZL-01(124); ATM-TECO-01(113) |
+| resultado | object | str:620 | 0 | 0.00 | 3 | EXITOSA(393); FALLO_CONEXION(120); FALLO_FONDOS(107) |
+| comision_aplicada | float64 | float:620 | 0 | 0.00 | 4 | 0.0(171); 15.0(159); 34.8(155) |
+| ind_duplicado_exacto | bool | bool:620 | 0 | 0.00 | 2 | False(600); True(20) |
+| ind_id_repetido | bool | bool:620 | 0 | 0.00 | 1 | False(620) |
+| fecha_hora_std | datetime64[ns, UTC-06:00] | Timestamp:620 | 0 | 0.00 | 598 | 2026-09-06 10:59:00-06:00(3); 2026-10-16 20:16:00-06:00(2); 2026-09-16 18:33:00- |
+| fecha_formato_origen | object | str:620 | 0 | 0.00 | 3 | YYYY/MM/DD HH:MM:SS (sin zona)(220); DD/MM/YYYY HH:MM (sin zona)(200); YYYY-MM-D |
+| ind_monto_original | float64 | float:593 | 27 | 4.35 | 14 | 0.0(101); 500.0(87); 12000.0(49) |
+| ind_monto_estado | object | str:620 | 0 | 0.00 | 3 | POSITIVO(492); CERO_ESPERADO(101); FALTANTE(27) |
+| ind_monto_atipico | object | str:620 | 0 | 0.00 | 3 | NO(491); NO_EVALUADO(128); EXTREMO_ALTO(1) |
+| ind_monto_imputado | bool | bool:620 | 0 | 0.00 | 2 | False(593); True(27) |
+| ind_id_cajero_imputado | bool | bool:620 | 0 | 0.00 | 2 | False(576); True(44) |
+| ind_monto_recortado | bool | bool:620 | 0 | 0.00 | 2 | False(619); True(1) |
 
 ## 7. Gráficas
 
@@ -140,4 +141,5 @@ Se calcula por segmento sobre montos observados > 0. **Leve** = fuera de Q±1.5�
 
 ## 8. Advertencias para el equipo
 
+- 20 copias exactas se conservaron y se marcaron con ind_duplicado_exacto; la validación debe enviarlas a cuarentena (comparten ID con su original).
 - Fechas sin zona horaria se asumieron en UTC-06:00 (confirmar con el equipo).
